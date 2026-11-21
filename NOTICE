@@ -35,6 +35,10 @@ Third-party components
 - PostgreSQL (PostgreSQL License) with pgvector (PostgreSQL License).
 - Qwen2.5-1.5B-Instruct weights: Apache License 2.0, downloaded at deploy time, not redistributed.
 - bge-small-en-v1.5 embedding weights: MIT License, downloaded at deploy time, not redistributed.
+- IBM Granite Guardian 3.2 3B-A800M weights (guard classifier, GGUF from ibm-research): Apache License 2.0, downloaded at deploy time, not redistributed.
+- BAAI bge-reranker-v2-m3 weights (GGUF conversion by gpustack): Apache License 2.0, downloaded at deploy time, not redistributed.
+- Prometheus (prom/prometheus image): Apache License 2.0, used unmodified.
+- Grafana (grafana/grafana image): AGPL-3.0, used unmodified; the provisioned dashboard JSON in charts/onprem-llm/dashboards is part of this repository.
 - Helm (Apache-2.0), Grafana k6 (AGPL-3.0, container image used as a tool), FastAPI (MIT), Uvicorn (BSD-3-Clause), httpx (BSD-3-Clause), psycopg (LGPL-3.0, used unmodified as a separate library), pytest (MIT), Pillow (MIT-CMU), matplotlib (Matplotlib License), Playwright (Apache-2.0).
 - Diagrams and the hero image are rendered with the Inter and JetBrains Mono fonts (SIL OFL 1.1); the font files are not redistributed here.
 - The RAG corpus consists of documentation from other MasterFabric repositories (AGPL-3.0).

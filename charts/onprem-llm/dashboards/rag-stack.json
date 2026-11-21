@@ -30,7 +30,20 @@
    },
    "fieldConfig": {
     "defaults": {
-     "unit": "short"
+     "unit": "short",
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "#4fc3f7"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#4fc3f7",
+        "value": null
+       }
+      ]
+     }
     },
     "overrides": []
    },
@@ -71,7 +84,20 @@
    },
    "fieldConfig": {
     "defaults": {
-     "unit": "percentunit"
+     "unit": "percentunit",
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "#4fc3f7"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#4fc3f7",
+        "value": null
+       }
+      ]
+     }
     },
     "overrides": []
    },
@@ -112,7 +138,20 @@
    },
    "fieldConfig": {
     "defaults": {
-     "unit": "s"
+     "unit": "s",
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "#4fc3f7"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#4fc3f7",
+        "value": null
+       }
+      ]
+     }
     },
     "overrides": []
    },
@@ -153,7 +192,20 @@
    },
    "fieldConfig": {
     "defaults": {
-     "unit": "s"
+     "unit": "s",
+     "color": {
+      "mode": "fixed",
+      "fixedColor": "#4fc3f7"
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "#4fc3f7",
+        "value": null
+       }
+      ]
+     }
     },
     "overrides": []
    },
@@ -332,7 +384,7 @@
     "type": "prometheus",
     "uid": "prometheus"
    },
-   "description": "Threshold 0.6: buckets above it were blocked.",
+   "description": "Questions per score bucket (upper bound shown). Threshold 0.6: buckets above it were blocked. Prometheus increase() extrapolates, so counts are approximate.",
    "gridPos": {
     "x": 12,
     "y": 12,

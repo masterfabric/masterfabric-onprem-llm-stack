@@ -1,0 +1,66 @@
+{{- $v := .Values.pgvector }}
+{{- if not $v.existingSecret }}
+{{- $existing := lookup "v1" "Secret" .Release.Namespace (include "onprem-llm.pgSecret" .) }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "onprem-llm.pgSecret" . }}
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+  annotations: {"helm.sh/resource-policy": keep}
+type: Opaque
+data:
+  {{- if $existing }}
+  password: {{ index $existing.data "password" }}
+  {{- else }}
+  password: {{ randAlphaNum 24 | b64enc }}
+  {{- end }}
+---
+{{- end }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-pgvector
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: pgvector
+spec:
+  serviceName: {{ .Release.Name }}-pgvector
+  replicas: 1
+  selector:
+    matchLabels: {{- include "onprem-llm.selector" (dict "root" . "component" "pgvector") | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "onprem-llm.labels" . | nindent 8 }}
+        app.kubernetes.io/component: pgvector
+    spec:
+      containers:
+        - name: postgres
+          image: {{ $v.image }}
+          env:
+            - {name: POSTGRES_DB, value: {{ $v.database }}}
+            - {name: POSTGRES_USER, value: {{ $v.user }}}
+            - name: POSTGRES_PASSWORD
+              valueFrom: {secretKeyRef: {name: {{ include "onprem-llm.pgSecret" . }}, key: password}}
+            - {name: PGDATA, value: /var/lib/postgresql/data/pgdata}
+          ports: [{name: pg, containerPort: 5432}]
+          readinessProbe:
+            exec: {command: [pg_isready, -U, {{ $v.user }}, -d, {{ $v.database }}]}
+            periodSeconds: 5
+          volumeMounts: [{name: data, mountPath: /var/lib/postgresql/data}]
+          resources: {{- toYaml $v.resources | nindent 12 }}
+  volumeClaimTemplates:
+    - metadata: {name: data}
+      spec:
+        accessModes: [ReadWriteOnce]
+        {{- with $v.storage.storageClass }}
+        storageClassName: {{ . }}
+        {{- end }}
+        resources: {requests: {storage: {{ $v.storage.size }}}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-pgvector
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+spec:
+  selector: {{- include "onprem-llm.selector" (dict "root" . "component" "pgvector") | nindent 4 }}
+  ports: [{name: pg, port: 5432, targetPort: pg}]

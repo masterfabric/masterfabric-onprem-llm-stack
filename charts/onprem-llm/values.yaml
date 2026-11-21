@@ -1,0 +1,86 @@
+# Default values: CPU-only lab on k3d (Apple Silicon or any laptop). See values-vllm-gpu.yaml for GPU nodes.
+
+# Model servers. Each one exposes the OpenAI API on port 8080 inside the cluster.
+llm:
+  backend: llamacpp            # llamacpp | vllm
+  servedName: qwen2.5-1.5b-instruct
+  replicas: 1
+  llamacpp:
+    image: ghcr.io/ggml-org/llama.cpp:server-b12464
+    model:
+      file: qwen2.5-1.5b-instruct-q4_k_m.gguf
+      url: https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf
+      sha256: ""               # optional pin; checked after download when set
+    contextSize: 8192          # shared by all slots
+    parallel: 4                # concurrent sequences (continuous batching)
+    threads: 4
+    extraArgs: []
+  vllm:
+    image: vllm/vllm-openai:v0.11.0
+    model: Qwen/Qwen2.5-1.5B-Instruct
+    maxModelLen: 4096
+    gpuMemoryUtilization: 0.85
+    extraArgs: []
+  resources:
+    requests: {cpu: "3", memory: 2Gi}
+    limits: {cpu: "4", memory: 4Gi}
+  storage: {size: 4Gi, storageClass: ""}
+  nodeSelector: {}
+  tolerations: []
+
+embed:
+  servedName: bge-small-en-v1.5
+  dim: 384
+  replicas: 1
+  image: ghcr.io/ggml-org/llama.cpp:server-b12464
+  model:
+    file: bge-small-en-v1.5-f16.gguf
+    url: https://huggingface.co/CompendiumLabs/bge-small-en-v1.5-gguf/resolve/main/bge-small-en-v1.5-f16.gguf
+    sha256: ""
+  threads: 1
+  resources:
+    requests: {cpu: 500m, memory: 256Mi}
+    limits: {cpu: "1", memory: 512Mi}
+  storage: {size: 1Gi, storageClass: ""}
+
+modelDownloader:
+  image: curlimages/curl:8.11.1
+
+pgvector:
+  image: pgvector/pgvector:pg16
+  database: rag
+  user: rag
+  existingSecret: ""           # secret with key "password"; generated when empty
+  resources:
+    requests: {cpu: 250m, memory: 256Mi}
+    limits: {cpu: "1", memory: 1Gi}
+  storage: {size: 2Gi, storageClass: ""}
+
+rag:
+  image: mf-rag-api:dev
+  imagePullPolicy: IfNotPresent
+  replicas: 1
+  topK: 4
+  minScore: 0.55
+  maxTokens: 200
+  resources:
+    requests: {cpu: 250m, memory: 256Mi}
+    limits: {cpu: "1", memory: 512Mi}
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 4
+    targetCPU: 70
+  ingestOnInstall: true        # post-install/upgrade Job that loads corpus/ into pgvector
+
+ingress:
+  enabled: true
+  className: traefik
+  host: ""                     # empty = any host (the lab uses 127.0.0.1:48080)
+  path: /
+
+networkPolicy:
+  enabled: true                # only the RAG API (and the ingest job) may reach models and database
+
+podSecurity:
+  runAsNonRoot: true

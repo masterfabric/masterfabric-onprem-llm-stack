@@ -1,0 +1,56 @@
+{{- $v := .Values.embed }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-embed-models
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+spec:
+  accessModes: [ReadWriteOnce]
+  {{- with $v.storage.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+  resources: {requests: {storage: {{ $v.storage.size }}}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-embed
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: embed
+spec:
+  replicas: {{ $v.replicas }}
+  strategy: {type: Recreate}
+  selector:
+    matchLabels: {{- include "onprem-llm.selector" (dict "root" . "component" "embed") | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "onprem-llm.labels" . | nindent 8 }}
+        app.kubernetes.io/component: embed
+    spec:
+      initContainers:
+        {{- include "onprem-llm.downloader" (dict "root" . "model" $v.model) | nindent 8 }}
+      containers:
+        - name: server
+          image: {{ $v.image }}
+          args: [--model, /models/{{ $v.model.file }}, --alias, {{ $v.servedName }}, --embeddings,
+                 --host, 0.0.0.0, --port, "8080", --threads, {{ $v.threads | quote }},
+                 --ctx-size, "2048", --batch-size, "512", --ubatch-size, "512", --parallel, "4", --metrics]
+          securityContext: {runAsNonRoot: true, runAsUser: 10001, allowPrivilegeEscalation: false}
+          ports: [{name: http, containerPort: 8080}]
+          readinessProbe: {httpGet: {path: /health, port: http}, periodSeconds: 5}
+          startupProbe: {httpGet: {path: /health, port: http}, periodSeconds: 5, failureThreshold: 60}
+          livenessProbe: {httpGet: {path: /health, port: http}, periodSeconds: 20}
+          volumeMounts: [{name: models, mountPath: /models, readOnly: true}]
+          resources: {{- toYaml $v.resources | nindent 12 }}
+      volumes:
+        - name: models
+          persistentVolumeClaim: {claimName: {{ .Release.Name }}-embed-models}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-embed
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+spec:
+  selector: {{- include "onprem-llm.selector" (dict "root" . "component" "embed") | nindent 4 }}
+  ports: [{name: http, port: 8080, targetPort: http}]

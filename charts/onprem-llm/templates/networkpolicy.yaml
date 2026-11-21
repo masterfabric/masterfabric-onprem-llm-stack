@@ -1,0 +1,18 @@
+{{- if .Values.networkPolicy.enabled }}
+{{- range $component := list "llm" "embed" "pgvector" }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $.Release.Name }}-{{ $component }}-clients-only
+  labels: {{- include "onprem-llm.labels" $ | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: {{- include "onprem-llm.selector" (dict "root" $ "component" $component) | nindent 6 }}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels: {onprem-llm/model-client: "true"}
+---
+{{- end }}
+{{- end }}

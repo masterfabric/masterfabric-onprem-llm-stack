@@ -1,0 +1,18 @@
+# GPU nodes (NVIDIA, CUDA): serve the same model with vLLM instead of llama.cpp.
+#   helm upgrade --install llm charts/onprem-llm -f charts/onprem-llm/values-vllm-gpu.yaml
+# Rendered and linted in CI of this repo; not run in the lab (no NVIDIA GPU on the build machine).
+llm:
+  backend: vllm
+  vllm:
+    image: vllm/vllm-openai:v0.11.0
+    model: Qwen/Qwen2.5-1.5B-Instruct      # or a larger model / AWQ / FP8 checkpoint
+    maxModelLen: 4096
+    gpuMemoryUtilization: 0.85
+    extraArgs: ["--enable-prefix-caching"]
+  resources:
+    requests: {cpu: "2", memory: 8Gi, nvidia.com/gpu: 1}
+    limits: {cpu: "8", memory: 16Gi, nvidia.com/gpu: 1}
+  nodeSelector:
+    nvidia.com/gpu.present: "true"
+  tolerations:
+    - {key: nvidia.com/gpu, operator: Exists, effect: NoSchedule}

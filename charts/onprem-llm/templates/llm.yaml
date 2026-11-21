@@ -1,0 +1,124 @@
+{{- $v := .Values.llm }}
+{{- if eq $v.backend "llamacpp" }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-llm-models
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+spec:
+  accessModes: [ReadWriteOnce]
+  {{- with $v.storage.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+  resources: {requests: {storage: {{ $v.storage.size }}}}
+---
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-llm
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: llm
+spec:
+  replicas: {{ $v.replicas }}
+  strategy: {type: Recreate}          # the model volume is ReadWriteOnce
+  selector:
+    matchLabels: {{- include "onprem-llm.selector" (dict "root" . "component" "llm") | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "onprem-llm.labels" . | nindent 8 }}
+        app.kubernetes.io/component: llm
+    spec:
+      {{- with $v.nodeSelector }}
+      nodeSelector: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $v.tolerations }}
+      tolerations: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if eq $v.backend "llamacpp" }}
+      initContainers:
+        {{- include "onprem-llm.downloader" (dict "root" . "model" $v.llamacpp.model) | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: server
+          {{- if eq $v.backend "llamacpp" }}
+          image: {{ $v.llamacpp.image }}
+          args:
+            - --model
+            - /models/{{ $v.llamacpp.model.file }}
+            - --alias
+            - {{ $v.servedName }}
+            - --host
+            - 0.0.0.0
+            - --port
+            - "8080"
+            - --ctx-size
+            - {{ $v.llamacpp.contextSize | quote }}
+            - --parallel
+            - {{ $v.llamacpp.parallel | quote }}
+            - --threads
+            - {{ $v.llamacpp.threads | quote }}
+            - --metrics
+            {{- range $v.llamacpp.extraArgs }}
+            - {{ . | quote }}
+            {{- end }}
+          securityContext: {runAsNonRoot: true, runAsUser: 10001, allowPrivilegeEscalation: false}
+          volumeMounts:
+            - {name: models, mountPath: /models, readOnly: true}
+          {{- else if eq $v.backend "vllm" }}
+          image: {{ $v.vllm.image }}
+          args:
+            - --model
+            - {{ $v.vllm.model }}
+            - --served-model-name
+            - {{ $v.servedName }}
+            - --host
+            - 0.0.0.0
+            - --port
+            - "8080"
+            - --max-model-len
+            - {{ $v.vllm.maxModelLen | quote }}
+            - --gpu-memory-utilization
+            - {{ $v.vllm.gpuMemoryUtilization | quote }}
+            {{- range $v.vllm.extraArgs }}
+            - {{ . | quote }}
+            {{- end }}
+          volumeMounts:
+            - {name: hf-cache, mountPath: /root/.cache/huggingface}
+            - {name: dshm, mountPath: /dev/shm}
+          {{- else }}
+          {{- fail "llm.backend must be llamacpp or vllm" }}
+          {{- end }}
+          ports: [{name: http, containerPort: 8080}]
+          readinessProbe:
+            httpGet: {path: /health, port: http}
+            periodSeconds: 5
+            failureThreshold: 3
+          startupProbe:
+            httpGet: {path: /health, port: http}
+            periodSeconds: 5
+            failureThreshold: 120          # allow up to 10 minutes to load the model
+          livenessProbe:
+            httpGet: {path: /health, port: http}
+            periodSeconds: 20
+            failureThreshold: 3
+          resources: {{- toYaml $v.resources | nindent 12 }}
+      volumes:
+        {{- if eq $v.backend "llamacpp" }}
+        - name: models
+          persistentVolumeClaim: {claimName: {{ .Release.Name }}-llm-models}
+        {{- else }}
+        - name: hf-cache
+          emptyDir: {}
+        - name: dshm
+          emptyDir: {medium: Memory, sizeLimit: 2Gi}
+        {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-llm
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+spec:
+  selector: {{- include "onprem-llm.selector" (dict "root" . "component" "llm") | nindent 4 }}
+  ports: [{name: http, port: 8080, targetPort: http}]

@@ -1,0 +1,28 @@
+{{- if .Values.rag.ingestOnInstall }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-ingest
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: ingest
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: 30                 # retries while the embedding server is still downloading its model
+  template:
+    metadata:
+      labels: {{- include "onprem-llm.labels" . | nindent 8 }}
+        app.kubernetes.io/component: ingest
+        onprem-llm/model-client: "true"
+    spec:
+      restartPolicy: OnFailure
+      securityContext: {runAsNonRoot: true, runAsUser: 10001}
+      containers:
+        - name: ingest
+          image: {{ .Values.rag.image }}
+          imagePullPolicy: {{ .Values.rag.imagePullPolicy }}
+          command: [python, -m, app.ingest]
+          env: {{- include "onprem-llm.ragEnv" . | nindent 12 }}
+{{- end }}

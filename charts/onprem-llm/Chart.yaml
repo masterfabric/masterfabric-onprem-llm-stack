@@ -1,0 +1,12 @@
+apiVersion: v2
+name: onprem-llm
+description: On-prem LLM stack - OpenAI-compatible inference (llama.cpp or vLLM), embeddings, pgvector and a guarded RAG API
+type: application
+version: 0.1.0
+appVersion: "1.0"
+annotations:
+  licenses: AGPL-3.0-only
+home: https://github.com/masterfabric/masterfabric-onprem-llm-stack
+maintainers:
+  - name: MasterFabric
+    url: https://github.com/masterfabric

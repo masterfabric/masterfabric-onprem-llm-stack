@@ -1,0 +1,10 @@
+{{ .Chart.Name }} installed as "{{ .Release.Name }}" (LLM backend: {{ .Values.llm.backend }}).
+
+Models download on first start (llama.cpp backend); watch with:
+  kubectl -n {{ .Release.Namespace }} get pods -w
+
+Ask a question through the ingress (k3d lab: http://127.0.0.1:48080):
+  curl -s http://127.0.0.1:48080/v1/ask -H 'content-type: application/json' \
+       -d '{"question":"Which object store do the MasterFabric labs use?"}'
+
+Only pods labelled onprem-llm/model-client=true can reach the model servers and the database.

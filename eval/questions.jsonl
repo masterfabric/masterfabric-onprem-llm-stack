@@ -1,0 +1,35 @@
+{"id": "q01", "question": "Which S3-compatible object store does the lakehouse lab use?", "expect_any": ["rustfs"], "source": "masterfabric-lakehouse-lab"}
+{"id": "q02", "question": "Which Iceberg format version is used for every table in the lakehouse lab?", "expect_any": ["v2", "version 2", "format 2"], "source": "masterfabric-lakehouse-lab/adr/0001"}
+{"id": "q03", "question": "What kind of Iceberg catalog does the lakehouse lab use instead of a Hive Metastore?", "expect_any": ["rest"], "source": "masterfabric-lakehouse-lab/adr/0003"}
+{"id": "q04", "question": "Which database stores the state of the Iceberg REST catalog in the lakehouse lab?", "expect_any": ["sqlite"], "source": "masterfabric-lakehouse-lab/adr/0003"}
+{"id": "q05", "question": "Which engine plays the role of Impala in the lakehouse lab?", "expect_any": ["trino"], "source": "masterfabric-lakehouse-lab"}
+{"id": "q06", "question": "Which write mode does silver.cdr use for MERGE, UPDATE and DELETE?", "expect_any": ["merge-on-read"], "source": "masterfabric-lakehouse-lab/adr/0007"}
+{"id": "q07", "question": "How many rules does the lakehouse data quality gate have?", "expect_any": ["20"], "source": "masterfabric-lakehouse-lab"}
+{"id": "q08", "question": "Where do rows that fail silver validation go?", "expect_any": ["quarantine"], "source": "masterfabric-lakehouse-lab"}
+{"id": "q09", "question": "How many snapshots does expire_snapshots keep in the lakehouse lab?", "expect_any": ["3", "three"], "source": "masterfabric-lakehouse-lab/adr/0007"}
+{"id": "q10", "question": "In which mode does Kafka run in the realtime telco lab?", "expect_any": ["kraft"], "source": "masterfabric-realtime-telco"}
+{"id": "q11", "question": "How long is the event-time watermark in the realtime lab?", "expect_any": ["2 min", "2-minute", "two minute", "2 minute"], "source": "masterfabric-realtime-telco"}
+{"id": "q12", "question": "What replaced the Gaussian z-score on RRC failures in the realtime detector?", "expect_any": ["cusum"], "source": "masterfabric-realtime-telco"}
+{"id": "q13", "question": "How many incidents did the realtime detector find on the held-out seed?", "expect_any": ["36"], "source": "masterfabric-realtime-telco"}
+{"id": "q14", "question": "What precision did static thresholds reach on the same windows in the realtime lab?", "expect_any": ["0.243"], "source": "masterfabric-realtime-telco"}
+{"id": "q15", "question": "What is the p50 latency from the last report to the alert in the realtime lab?", "expect_any": ["9.8"], "source": "masterfabric-realtime-telco"}
+{"id": "q16", "question": "How many cells does the simulated radio network in the realtime lab have?", "expect_any": ["240"], "source": "masterfabric-realtime-telco"}
+{"id": "q17", "question": "Which state store does Spark Structured Streaming use in the realtime lab?", "expect_any": ["rocksdb"], "source": "masterfabric-realtime-telco"}
+{"id": "q18", "question": "How many duplicates were removed during the realtime live run?", "expect_any": ["2,531", "2531"], "source": "masterfabric-realtime-telco"}
+{"id": "q19", "question": "Which payload format does the realtime lab use on Kafka?", "expect_any": ["json"], "source": "masterfabric-realtime-telco"}
+{"id": "q20", "question": "What bronze throughput in events per second did the realtime lab measure?", "expect_any": ["125,611", "125611"], "source": "masterfabric-realtime-telco"}
+{"id": "q21", "question": "What PSI value triggers retraining in the churn MLOps pipeline?", "expect_any": ["0.25"], "source": "masterfabric-airflow-mlops"}
+{"id": "q22", "question": "By how much AUC must a challenger beat the champion to be promoted?", "expect_any": ["0.002"], "source": "masterfabric-airflow-mlops"}
+{"id": "q23", "question": "Which month was halted by the data-quality gate in the MLOps lab?", "expect_any": ["2026-03", "march 2026"], "source": "masterfabric-airflow-mlops"}
+{"id": "q24", "question": "How often does the churn scoring API check the champion alias?", "expect_any": ["15 s", "15 seconds", "every 15"], "source": "masterfabric-airflow-mlops"}
+{"id": "q25", "question": "Which Airflow executor does the MLOps lab use?", "expect_any": ["localexecutor", "local executor"], "source": "masterfabric-airflow-mlops"}
+{"id": "q26", "question": "What realised AUC did the auto policy reach in 2026-10?", "expect_any": ["0.830", "0.83"], "source": "masterfabric-airflow-mlops"}
+{"id": "q27", "question": "Which scikit-learn model is used for the churn model?", "expect_any": ["histgradientboosting"], "source": "masterfabric-airflow-mlops"}
+{"id": "q28", "question": "Which MLflow registry alias marks the live churn model?", "expect_any": ["champion"], "source": "masterfabric-airflow-mlops"}
+{"id": "q29", "question": "How many labelled months are used to train a churn challenger?", "expect_any": ["3", "three"], "source": "masterfabric-airflow-mlops"}
+{"id": "q30", "question": "How long did the rollback of the champion alias to v3 take to be served?", "expect_any": ["3.41"], "source": "masterfabric-airflow-mlops"}
+{"id": "n01", "question": "What GPU model does the lakehouse lab use to train its churn model?", "expect_refusal": true}
+{"id": "n02", "question": "Who is the chief executive officer of MasterFabric?", "expect_refusal": true}
+{"id": "n03", "question": "What is the capital of Australia?", "expect_refusal": true}
+{"id": "n04", "question": "How much does the postpaid_l tariff cost per month in euros?", "expect_refusal": true}
+{"id": "n05", "question": "Which Kubernetes version does the realtime telco lab run on?", "expect_refusal": true}

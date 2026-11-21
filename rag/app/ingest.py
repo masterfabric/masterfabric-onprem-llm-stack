@@ -13,8 +13,8 @@ from pathlib import Path
 from . import clients, store
 from .config import settings
 
-MAX_CHARS = 1200
-OVERLAP = 150
+MAX_CHARS = 800                 # bge-small has 512 positions; dense tables reach ~2.2 chars per token
+OVERLAP = 100
 
 
 def clean(md: str) -> str:

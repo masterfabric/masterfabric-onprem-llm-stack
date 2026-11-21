@@ -65,4 +65,4 @@ def test_chunking(tmp_path):
     p.write_text("# Title\n\nintro text that is long enough to keep as a chunk.\n\n## Part\n\n" + "x " * 1000)
     cs = chunks_of(p, tmp_path)
     assert cs[0]["section"] == "Title" and any(c["section"] == "Title > Part" for c in cs)
-    assert all(len(c["content"]) <= 1200 + 40 for c in cs)
+    assert all(len(c["content"]) <= 800 + 40 for c in cs)

@@ -1,0 +1,1590 @@
+{
+  "vector_only": {
+    "summary": {
+      "answer_accuracy": 0.8,
+      "refusal_accuracy": 1.0,
+      "hit_at_1": 0.833,
+      "hit_at_4": 0.933,
+      "mrr": 0.875,
+      "blocked": 0,
+      "latency_s_p50": 4.77,
+      "rerank_ms_p50": null,
+      "rerank_ms_p95": null,
+      "guard_ms_p50": 1172.8
+    },
+    "rows": [
+      {
+        "id": "q01",
+        "answer": "The lakehouse lab uses RustFS (S3 API + console) [1].",
+        "seconds": 5.18,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/adr/0002-object-storage.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/adr/0002-object-storage.md",
+          "masterfabric-lakehouse-lab/adr/0002-object-storage.md"
+        ],
+        "timings_ms": {
+          "guard": 1158.1,
+          "embed": 63.2,
+          "retrieve": 7.1,
+          "generate": 3946.3,
+          "total": 5176.3
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q02",
+        "answer": "Apache Iceberg v2",
+        "seconds": 4.4,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/adr/0002-object-storage.md"
+        ],
+        "timings_ms": {
+          "guard": 1184.6,
+          "embed": 49.2,
+          "retrieve": 0.7,
+          "generate": 3167.6,
+          "total": 4402.5
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": null
+      },
+      {
+        "id": "q03",
+        "answer": "The lakehouse lab uses an Iceberg REST catalog protocol instead of a Hive Metastore.",
+        "seconds": 4.61,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/adr/0003-rest-catalog.md",
+          "masterfabric-lakehouse-lab/adr/0002-object-storage.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/adr/0003-rest-catalog.md"
+        ],
+        "timings_ms": {
+          "guard": 1222.6,
+          "embed": 54.8,
+          "retrieve": 0.7,
+          "generate": 3328.0,
+          "total": 4606.3
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q04",
+        "answer": "Apache Iceberg v2 [2].",
+        "seconds": 4.28,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/adr/0002-object-storage.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1188.5,
+          "embed": 52.2,
+          "retrieve": 1.0,
+          "generate": 3035.7,
+          "total": 4277.8
+        },
+        "kind": "answerable",
+        "correct": false,
+        "rank": null
+      },
+      {
+        "id": "q05",
+        "answer": "Impala (Data Warehouse service or Base)",
+        "seconds": 4.95,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1170.9,
+          "embed": 46.4,
+          "retrieve": 0.8,
+          "generate": 3732.9,
+          "total": 4951.3
+        },
+        "kind": "answerable",
+        "correct": false,
+        "rank": 1
+      },
+      {
+        "id": "q06",
+        "answer": "silver.cdr uses **merge-on-read** for MERGE, UPDATE and DELETE.",
+        "seconds": 4.71,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/adr/0007-table-maintenance.md",
+          "masterfabric-lakehouse-lab/adr/0007-table-maintenance.md",
+          "masterfabric-lakehouse-lab/adr/0001-table-format-iceberg.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1158.2,
+          "embed": 49.3,
+          "retrieve": 1.4,
+          "generate": 3501.7,
+          "total": 4710.8
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q07",
+        "answer": "The lakehouse data quality gate has 11 rules.",
+        "seconds": 4.72,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-airflow-mlops/adr/0002-data-quality-gate-halts.md",
+          "masterfabric-lakehouse-lab/adr/0004-medallion-contracts.md"
+        ],
+        "timings_ms": {
+          "guard": 1141.7,
+          "embed": 40.1,
+          "retrieve": 0.6,
+          "generate": 3533.4,
+          "total": 4716.1
+        },
+        "kind": "answerable",
+        "correct": false,
+        "rank": 1
+      },
+      {
+        "id": "q08",
+        "answer": "Rows that fail silver validation go to `silver.quarantine` with the first failed rule and the raw payload.",
+        "seconds": 5.0,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/adr/0004-medallion-contracts.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1116.1,
+          "embed": 34.8,
+          "retrieve": 0.6,
+          "generate": 3849.6,
+          "total": 5001.4
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q09",
+        "answer": "3 [2]",
+        "seconds": 4.88,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/adr/0007-table-maintenance.md"
+        ],
+        "timings_ms": {
+          "guard": 1162.5,
+          "embed": 55.9,
+          "retrieve": 0.8,
+          "generate": 3655.2,
+          "total": 4874.8
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 4
+      },
+      {
+        "id": "q10",
+        "answer": "Kafka runs in KRaft mode in the realtime telco lab.",
+        "seconds": 5.47,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1210.5,
+          "embed": 47.2,
+          "retrieve": 0.6,
+          "generate": 4211.3,
+          "total": 5470.0
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q11",
+        "answer": "The event-time watermark is 2 minutes long.",
+        "seconds": 4.67,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/adr/0003-event-time-watermarks.md",
+          "masterfabric-realtime-telco/adr/0003-event-time-watermarks.md",
+          "masterfabric-realtime-telco/adr/0003-event-time-watermarks.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1221.9,
+          "embed": 47.8,
+          "retrieve": 0.7,
+          "generate": 3392.9,
+          "total": 4663.7
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q12",
+        "answer": "The Bernoulli CUSUM replaced the Gaussian z-score on RRC failures.",
+        "seconds": 5.99,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/adr/0005-adaptive-detector.md",
+          "masterfabric-realtime-telco/adr/0005-adaptive-detector.md"
+        ],
+        "timings_ms": {
+          "guard": 1172.8,
+          "embed": 52.6,
+          "retrieve": 0.6,
+          "generate": 4760.2,
+          "total": 5986.7
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q13",
+        "answer": "36",
+        "seconds": 5.76,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1172.7,
+          "embed": 48.0,
+          "retrieve": 0.6,
+          "generate": 4535.2,
+          "total": 5756.8
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q14",
+        "answer": "A Gaussian z-score on the RRC failure rate produced **88 false alerts** on the development seed.",
+        "seconds": 4.53,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1189.7,
+          "embed": 49.9,
+          "retrieve": 0.6,
+          "generate": 3289.5,
+          "total": 4530.1
+        },
+        "kind": "answerable",
+        "correct": false,
+        "rank": 1
+      },
+      {
+        "id": "q15",
+        "answer": "The p50 latency from the last report to the alert in the realtime lab is 9.8 seconds.",
+        "seconds": 6.01,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/adr/0005-adaptive-detector.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1237.4,
+          "embed": 54.8,
+          "retrieve": 0.6,
+          "generate": 4712.5,
+          "total": 6005.6
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q16",
+        "answer": "The simulated radio network in the realtime lab has 240 cells.",
+        "seconds": 5.02,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1196.7,
+          "embed": 49.5,
+          "retrieve": 1.1,
+          "generate": 3768.6,
+          "total": 5016.3
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q17",
+        "answer": "RocksDB state store [1].",
+        "seconds": 3.27,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/adr/0002-spark-structured-streaming.md",
+          "masterfabric-realtime-telco/adr/0002-spark-structured-streaming.md",
+          "masterfabric-realtime-telco/adr/0002-spark-structured-streaming.md",
+          "masterfabric-realtime-telco/adr/0002-spark-structured-streaming.md"
+        ],
+        "timings_ms": {
+          "guard": 1158.2,
+          "embed": 45.0,
+          "retrieve": 0.6,
+          "generate": 2059.6,
+          "total": 3263.6
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q18",
+        "answer": "2,531 [3]",
+        "seconds": 4.77,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1134.1,
+          "embed": 42.5,
+          "retrieve": 0.6,
+          "generate": 3586.5,
+          "total": 4764.0
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 2
+      },
+      {
+        "id": "q19",
+        "answer": "The realtime lab uses JSON payloads with an explicit schema contract.",
+        "seconds": 5.17,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/adr/0007-payload-contract.md"
+        ],
+        "timings_ms": {
+          "guard": 1140.3,
+          "embed": 46.7,
+          "retrieve": 0.9,
+          "generate": 3984.1,
+          "total": 5172.3
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q20",
+        "answer": "The lab measured a bronze throughput of 125,611 events per second.",
+        "seconds": 6.09,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/adr/0003-event-time-watermarks.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1201.1,
+          "embed": 51.0,
+          "retrieve": 0.8,
+          "generate": 4832.1,
+          "total": 6085.4
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q21",
+        "answer": "The PSI value that triggers retraining in the churn MLOps pipeline is 0.25.",
+        "seconds": 6.67,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/adr/0004-retrain-triggers.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1175.6,
+          "embed": 48.0,
+          "retrieve": 0.7,
+          "generate": 5438.5,
+          "total": 6663.1
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q22",
+        "answer": "The challenger must beat the champion by at least 0.002 AUC to be promoted.",
+        "seconds": 5.16,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0005-sliding-window-holdout.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/adr/0003-mlflow-registry-aliases.md",
+          "masterfabric-airflow-mlops/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1192.9,
+          "embed": 46.2,
+          "retrieve": 0.6,
+          "generate": 3918.2,
+          "total": 5158.3
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q23",
+        "answer": "The month that was halted by the data-quality gate was March.",
+        "seconds": 3.88,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0002-data-quality-gate-halts.md",
+          "masterfabric-airflow-mlops/adr/0002-data-quality-gate-halts.md",
+          "masterfabric-airflow-mlops/adr/0002-data-quality-gate-halts.md",
+          "masterfabric-airflow-mlops/adr/0002-data-quality-gate-halts.md"
+        ],
+        "timings_ms": {
+          "guard": 1215.5,
+          "embed": 47.8,
+          "retrieve": 0.6,
+          "generate": 2609.2,
+          "total": 3873.4
+        },
+        "kind": "answerable",
+        "correct": false,
+        "rank": 1
+      },
+      {
+        "id": "q24",
+        "answer": "The churn scoring API checks the champion alias every 15 seconds.",
+        "seconds": 4.09,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0003-mlflow-registry-aliases.md",
+          "masterfabric-airflow-mlops/adr/0006-serving-hot-swap.md",
+          "masterfabric-airflow-mlops/adr/0006-serving-hot-swap.md",
+          "masterfabric-airflow-mlops/adr/0003-mlflow-registry-aliases.md"
+        ],
+        "timings_ms": {
+          "guard": 1160.2,
+          "embed": 41.9,
+          "retrieve": 0.6,
+          "generate": 2882.2,
+          "total": 4085.1
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q25",
+        "answer": "The MLOps lab uses the LocalExecutor [1].",
+        "seconds": 4.56,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1138.7,
+          "embed": 44.2,
+          "retrieve": 0.6,
+          "generate": 3379.0,
+          "total": 4562.8
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q26",
+        "answer": "0.8300 [3].",
+        "seconds": 6.63,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0005-sliding-window-holdout.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1200.5,
+          "embed": 45.7,
+          "retrieve": 0.6,
+          "generate": 5380.3,
+          "total": 6627.5
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q27",
+        "answer": "The scikit-learn model used for the churn model is `HistGradientBoostingClassifier`.",
+        "seconds": 4.9,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/adr/0005-gold-marts.md",
+          "masterfabric-airflow-mlops/adr/0003-mlflow-registry-aliases.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1166.7,
+          "embed": 44.1,
+          "retrieve": 0.6,
+          "generate": 3690.9,
+          "total": 4902.5
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 2
+      },
+      {
+        "id": "q28",
+        "answer": "The MLflow registry alias that marks the live churn model is `@champion`.",
+        "seconds": 3.88,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0003-mlflow-registry-aliases.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/adr/0003-mlflow-registry-aliases.md",
+          "masterfabric-airflow-mlops/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1142.6,
+          "embed": 41.2,
+          "retrieve": 0.6,
+          "generate": 2698.1,
+          "total": 3882.8
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q29",
+        "answer": "The lab has to replay a year of that history reproducibly on a laptop.",
+        "seconds": 3.76,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0003-mlflow-registry-aliases.md",
+          "masterfabric-airflow-mlops/adr/0001-airflow-monthly-catchup.md",
+          "masterfabric-airflow-mlops/adr/0005-sliding-window-holdout.md",
+          "masterfabric-airflow-mlops/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1209.7,
+          "embed": 42.1,
+          "retrieve": 0.6,
+          "generate": 2503.3,
+          "total": 3755.9
+        },
+        "kind": "answerable",
+        "correct": false,
+        "rank": 1
+      },
+      {
+        "id": "q30",
+        "answer": "The rollback of the champion alias to v3 took 3.41 seconds to be served.",
+        "seconds": 4.37,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0006-serving-hot-swap.md",
+          "masterfabric-airflow-mlops/adr/0006-serving-hot-swap.md",
+          "masterfabric-airflow-mlops/adr/0003-mlflow-registry-aliases.md",
+          "masterfabric-airflow-mlops/adr/0003-mlflow-registry-aliases.md"
+        ],
+        "timings_ms": {
+          "guard": 1174.9,
+          "embed": 50.8,
+          "retrieve": 0.6,
+          "generate": 3137.9,
+          "total": 4364.5
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "n01",
+        "answer": "I don't know based on the documentation.",
+        "seconds": 5.01,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1223.1,
+          "embed": 51.0,
+          "retrieve": 0.7,
+          "generate": 3736.5,
+          "total": 5011.6
+        },
+        "kind": "unanswerable",
+        "correct": true
+      },
+      {
+        "id": "n02",
+        "answer": "I don't know based on the documentation.",
+        "seconds": 3.44,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1165.7,
+          "embed": 41.7,
+          "retrieve": 0.6,
+          "generate": 2228.7,
+          "total": 3437.0
+        },
+        "kind": "unanswerable",
+        "correct": true
+      },
+      {
+        "id": "n03",
+        "answer": "I don't know based on the documentation.",
+        "seconds": 1.16,
+        "blocked": false,
+        "citations": [],
+        "timings_ms": {
+          "guard": 1123.4,
+          "embed": 31.5,
+          "retrieve": 0.6
+        },
+        "kind": "unanswerable",
+        "correct": true
+      },
+      {
+        "id": "n04",
+        "answer": "I don't know based on the documentation.",
+        "seconds": 4.95,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0002-data-quality-gate-halts.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/adr/0001-airflow-monthly-catchup.md"
+        ],
+        "timings_ms": {
+          "guard": 1181.2,
+          "embed": 48.3,
+          "retrieve": 0.6,
+          "generate": 3713.2,
+          "total": 4943.5
+        },
+        "kind": "unanswerable",
+        "correct": true
+      },
+      {
+        "id": "n05",
+        "answer": "I don't know based on the documentation.",
+        "seconds": 3.83,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1149.0,
+          "embed": 47.2,
+          "retrieve": 0.6,
+          "generate": 2631.8,
+          "total": 3828.9
+        },
+        "kind": "unanswerable",
+        "correct": true
+      }
+    ]
+  },
+  "reranked": {
+    "summary": {
+      "answer_accuracy": 0.8,
+      "refusal_accuracy": 1.0,
+      "hit_at_1": 0.933,
+      "hit_at_4": 1.0,
+      "mrr": 0.961,
+      "blocked": 0,
+      "latency_s_p50": 8.11,
+      "rerank_ms_p50": 3773.2,
+      "rerank_ms_p95": 4446.3,
+      "guard_ms_p50": 1179.2
+    },
+    "rows": [
+      {
+        "id": "q01",
+        "answer": "The lakehouse lab uses RustFS [1].",
+        "seconds": 6.73,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/adr/0002-object-storage.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/adr/0002-object-storage.md",
+          "masterfabric-lakehouse-lab/adr/0002-object-storage.md"
+        ],
+        "timings_ms": {
+          "guard": 1160.2,
+          "embed": 44.4,
+          "retrieve": 0.7,
+          "rerank": 4094.7,
+          "generate": 1429.0,
+          "total": 6729.7
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q02",
+        "answer": "Apache Iceberg v2",
+        "seconds": 8.38,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/adr/0001-table-format-iceberg.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1177.2,
+          "embed": 48.6,
+          "retrieve": 0.7,
+          "rerank": 3715.6,
+          "generate": 3439.1,
+          "total": 8382.0
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 2
+      },
+      {
+        "id": "q03",
+        "answer": "The lakehouse lab uses an Iceberg REST catalog instead of a Hive Metastore.",
+        "seconds": 7.02,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/adr/0003-rest-catalog.md",
+          "masterfabric-lakehouse-lab/adr/0003-rest-catalog.md",
+          "masterfabric-lakehouse-lab/adr/0003-rest-catalog.md",
+          "masterfabric-lakehouse-lab/adr/0003-rest-catalog.md"
+        ],
+        "timings_ms": {
+          "guard": 1234.6,
+          "embed": 55.4,
+          "retrieve": 0.6,
+          "rerank": 3499.6,
+          "generate": 2231.9,
+          "total": 7022.9
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q04",
+        "answer": "The lab stores tables in RustFS [2].",
+        "seconds": 8.17,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/adr/0003-rest-catalog.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/adr/0003-rest-catalog.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1187.5,
+          "embed": 49.4,
+          "retrieve": 0.6,
+          "rerank": 3791.0,
+          "generate": 3136.8,
+          "total": 8166.0
+        },
+        "kind": "answerable",
+        "correct": false,
+        "rank": 1
+      },
+      {
+        "id": "q05",
+        "answer": "The Impala role plays the role of Impala in the lakehouse lab.",
+        "seconds": 8.11,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1197.4,
+          "embed": 45.9,
+          "retrieve": 0.8,
+          "rerank": 3750.1,
+          "generate": 3110.7,
+          "total": 8105.7
+        },
+        "kind": "answerable",
+        "correct": false,
+        "rank": 1
+      },
+      {
+        "id": "q06",
+        "answer": "silver.cdr uses merge-on-read for MERGE, UPDATE and DELETE.",
+        "seconds": 9.24,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/adr/0007-table-maintenance.md",
+          "masterfabric-lakehouse-lab/adr/0007-table-maintenance.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1167.3,
+          "embed": 49.4,
+          "retrieve": 0.6,
+          "rerank": 4355.3,
+          "generate": 3669.4,
+          "total": 9242.7
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q07",
+        "answer": "The lakehouse data quality gate has 20 rules.",
+        "seconds": 8.03,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-airflow-mlops/adr/0002-data-quality-gate-halts.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1173.2,
+          "embed": 40.6,
+          "retrieve": 0.6,
+          "rerank": 3941.2,
+          "generate": 2870.5,
+          "total": 8026.8
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q08",
+        "answer": "Rows that fail silver validation go to `silver.quarantine` with the first failed rule and the raw payload.",
+        "seconds": 9.45,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/adr/0004-medallion-contracts.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1145.0,
+          "embed": 36.4,
+          "retrieve": 0.7,
+          "rerank": 4192.7,
+          "generate": 4071.7,
+          "total": 9447.3
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q09",
+        "answer": "3 [2]",
+        "seconds": 6.82,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/adr/0007-table-maintenance.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1179.2,
+          "embed": 53.6,
+          "retrieve": 0.8,
+          "rerank": 3891.1,
+          "generate": 1694.7,
+          "total": 6820.2
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 3
+      },
+      {
+        "id": "q10",
+        "answer": "Kafka runs in KRaft mode in the realtime telco lab.",
+        "seconds": 8.49,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/adr/0001-kafka-kraft-backbone.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1156.2,
+          "embed": 47.9,
+          "retrieve": 0.6,
+          "rerank": 3763.9,
+          "generate": 3515.4,
+          "total": 8484.8
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q11",
+        "answer": "The event-time watermark in the realtime lab is 2 minutes.",
+        "seconds": 7.01,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/adr/0003-event-time-watermarks.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/adr/0003-event-time-watermarks.md"
+        ],
+        "timings_ms": {
+          "guard": 1186.1,
+          "embed": 47.9,
+          "retrieve": 0.9,
+          "rerank": 3403.2,
+          "generate": 2366.3,
+          "total": 7005.2
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q12",
+        "answer": "The count model replaced the Gaussian z-score on RRC failures in the realtime detector.",
+        "seconds": 9.04,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/adr/0005-adaptive-detector.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/adr/0005-adaptive-detector.md"
+        ],
+        "timings_ms": {
+          "guard": 1195.8,
+          "embed": 53.3,
+          "retrieve": 0.6,
+          "rerank": 4535.6,
+          "generate": 3254.5,
+          "total": 9040.8
+        },
+        "kind": "answerable",
+        "correct": false,
+        "rank": 1
+      },
+      {
+        "id": "q13",
+        "answer": "36",
+        "seconds": 8.53,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1206.0,
+          "embed": 48.3,
+          "retrieve": 0.6,
+          "rerank": 4337.4,
+          "generate": 2933.0,
+          "total": 8526.1
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q14",
+        "answer": "253 false alerts",
+        "seconds": 8.91,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1196.0,
+          "embed": 50.9,
+          "retrieve": 0.6,
+          "rerank": 4446.3,
+          "generate": 3208.6,
+          "total": 8903.4
+        },
+        "kind": "answerable",
+        "correct": false,
+        "rank": 1
+      },
+      {
+        "id": "q15",
+        "answer": "The p50 latency from the last report to the alert in the realtime lab is 9.8 seconds.",
+        "seconds": 8.94,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/adr/0005-adaptive-detector.md",
+          "masterfabric-realtime-telco/adr/0002-spark-structured-streaming.md"
+        ],
+        "timings_ms": {
+          "guard": 1222.6,
+          "embed": 56.5,
+          "retrieve": 0.7,
+          "rerank": 4242.1,
+          "generate": 3414.8,
+          "total": 8937.6
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q16",
+        "answer": "The simulated radio network in the realtime lab has 120 cells.",
+        "seconds": 8.28,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-lakehouse-lab/adr/0005-gold-marts.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1164.7,
+          "embed": 49.4,
+          "retrieve": 0.7,
+          "rerank": 4118.8,
+          "generate": 2945.5,
+          "total": 8279.9
+        },
+        "kind": "answerable",
+        "correct": false,
+        "rank": 1
+      },
+      {
+        "id": "q17",
+        "answer": "RocksDB state store [1].",
+        "seconds": 6.43,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/adr/0002-spark-structured-streaming.md",
+          "masterfabric-realtime-telco/adr/0002-spark-structured-streaming.md",
+          "masterfabric-realtime-telco/adr/0002-spark-structured-streaming.md",
+          "masterfabric-realtime-telco/adr/0002-spark-structured-streaming.md"
+        ],
+        "timings_ms": {
+          "guard": 1157.1,
+          "embed": 45.8,
+          "retrieve": 0.9,
+          "rerank": 3137.4,
+          "generate": 2084.3,
+          "total": 6426.1
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q18",
+        "answer": "2,531 duplicates were removed during the realtime live run.",
+        "seconds": 7.04,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1134.6,
+          "embed": 42.8,
+          "retrieve": 0.6,
+          "rerank": 4026.5,
+          "generate": 1834.4,
+          "total": 7039.7
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q19",
+        "answer": "The realtime lab uses JSON with an explicit schema contract on Kafka.",
+        "seconds": 8.45,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/adr/0007-payload-contract.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/adr/0007-payload-contract.md",
+          "masterfabric-realtime-telco/adr/0002-spark-structured-streaming.md"
+        ],
+        "timings_ms": {
+          "guard": 1132.3,
+          "embed": 43.9,
+          "retrieve": 0.6,
+          "rerank": 4195.2,
+          "generate": 3075.9,
+          "total": 8448.8
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q20",
+        "answer": "The realtime lab measured a bronze throughput of 125,611 events per second.",
+        "seconds": 10.68,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1181.1,
+          "embed": 51.4,
+          "retrieve": 0.8,
+          "rerank": 4518.4,
+          "generate": 4920.7,
+          "total": 10673.3
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q21",
+        "answer": "The PSI value that triggers retraining in the churn MLOps pipeline is 0.25.",
+        "seconds": 11.2,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0004-retrain-triggers.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1184.7,
+          "embed": 46.7,
+          "retrieve": 0.6,
+          "rerank": 3938.5,
+          "generate": 6024.2,
+          "total": 11195.4
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q22",
+        "answer": "The challenger must beat the champion by at least 0.002 AUC to be promoted.",
+        "seconds": 7.56,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0005-sliding-window-holdout.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1208.9,
+          "embed": 47.1,
+          "retrieve": 0.7,
+          "rerank": 3739.7,
+          "generate": 2560.3,
+          "total": 7557.4
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q23",
+        "answer": "The month was halted by the data-quality gate in the MLOps lab.",
+        "seconds": 8.52,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0002-data-quality-gate-halts.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1240.9,
+          "embed": 50.3,
+          "retrieve": 0.7,
+          "rerank": 3952.1,
+          "generate": 3271.5,
+          "total": 8516.2
+        },
+        "kind": "answerable",
+        "correct": false,
+        "rank": 1
+      },
+      {
+        "id": "q24",
+        "answer": "The churn scoring API checks the champion alias every 15 seconds.",
+        "seconds": 7.71,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0006-serving-hot-swap.md",
+          "masterfabric-airflow-mlops/adr/0003-mlflow-registry-aliases.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/adr/0006-serving-hot-swap.md"
+        ],
+        "timings_ms": {
+          "guard": 1184.5,
+          "embed": 44.9,
+          "retrieve": 0.7,
+          "rerank": 3493.1,
+          "generate": 2985.4,
+          "total": 7709.3
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q25",
+        "answer": "The MLOps lab uses the LocalExecutor.",
+        "seconds": 7.95,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1159.0,
+          "embed": 44.9,
+          "retrieve": 0.7,
+          "rerank": 3411.2,
+          "generate": 3326.5,
+          "total": 7943.0
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q26",
+        "answer": "0.8300 [2]",
+        "seconds": 9.35,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0005-sliding-window-holdout.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/adr/0004-retrain-triggers.md"
+        ],
+        "timings_ms": {
+          "guard": 1214.7,
+          "embed": 47.7,
+          "retrieve": 0.8,
+          "rerank": 2743.0,
+          "generate": 5341.2,
+          "total": 9347.9
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q27",
+        "answer": "The scikit-learn model used for the churn model is `HistGradientBoostingClassifier` behind a one-hot encoder.",
+        "seconds": 7.24,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-airflow-mlops/adr/0001-airflow-monthly-catchup.md",
+          "masterfabric-lakehouse-lab/adr/0005-gold-marts.md"
+        ],
+        "timings_ms": {
+          "guard": 1209.6,
+          "embed": 45.0,
+          "retrieve": 0.7,
+          "rerank": 3453.2,
+          "generate": 2526.7,
+          "total": 7236.0
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q28",
+        "answer": "The MLflow registry alias that marks the live churn model is `@champion`.",
+        "seconds": 6.7,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0003-mlflow-registry-aliases.md",
+          "masterfabric-airflow-mlops/adr/0003-mlflow-registry-aliases.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1146.8,
+          "embed": 40.7,
+          "retrieve": 0.6,
+          "rerank": 2888.0,
+          "generate": 2626.2,
+          "total": 6702.8
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q29",
+        "answer": "The challenger is trained on the 3 newest labelled months.",
+        "seconds": 8.3,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/adr/0005-sliding-window-holdout.md",
+          "masterfabric-airflow-mlops/adr/0005-sliding-window-holdout.md"
+        ],
+        "timings_ms": {
+          "guard": 1177.3,
+          "embed": 44.1,
+          "retrieve": 0.6,
+          "rerank": 3378.1,
+          "generate": 3695.6,
+          "total": 8296.4
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "q30",
+        "answer": "The rollback of the champion alias to v3 took 3.41 seconds to be served.",
+        "seconds": 8.06,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/adr/0006-serving-hot-swap.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/adr/0006-serving-hot-swap.md"
+        ],
+        "timings_ms": {
+          "guard": 1203.9,
+          "embed": 52.2,
+          "retrieve": 0.6,
+          "rerank": 3260.3,
+          "generate": 3537.4,
+          "total": 8055.0
+        },
+        "kind": "answerable",
+        "correct": true,
+        "rank": 1
+      },
+      {
+        "id": "n01",
+        "answer": "I don't know based on the documentation.",
+        "seconds": 8.08,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1210.1,
+          "embed": 52.3,
+          "retrieve": 1.2,
+          "rerank": 3766.0,
+          "generate": 3048.2,
+          "total": 8078.7
+        },
+        "kind": "unanswerable",
+        "correct": true
+      },
+      {
+        "id": "n02",
+        "answer": "I don't know based on the documentation.",
+        "seconds": 7.05,
+        "blocked": false,
+        "citations": [
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md",
+          "masterfabric-lakehouse-lab/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1157.6,
+          "embed": 41.9,
+          "retrieve": 0.6,
+          "rerank": 2995.3,
+          "generate": 2854.0,
+          "total": 7050.1
+        },
+        "kind": "unanswerable",
+        "correct": true
+      },
+      {
+        "id": "n03",
+        "answer": "I don't know based on the documentation.",
+        "seconds": 1.16,
+        "blocked": false,
+        "citations": [],
+        "timings_ms": {
+          "guard": 1125.0,
+          "embed": 32.9,
+          "retrieve": 0.8
+        },
+        "kind": "unanswerable",
+        "correct": true
+      },
+      {
+        "id": "n04",
+        "answer": "I don't know based on the documentation.",
+        "seconds": 7.58,
+        "blocked": false,
+        "citations": [
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/README.md",
+          "masterfabric-airflow-mlops/adr/0004-retrain-triggers.md"
+        ],
+        "timings_ms": {
+          "guard": 1170.0,
+          "embed": 47.2,
+          "retrieve": 0.6,
+          "rerank": 2229.2,
+          "generate": 4133.4,
+          "total": 7580.9
+        },
+        "kind": "unanswerable",
+        "correct": true
+      },
+      {
+        "id": "n05",
+        "answer": "I don't know based on the documentation.",
+        "seconds": 8.76,
+        "blocked": false,
+        "citations": [
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md",
+          "masterfabric-realtime-telco/README.md"
+        ],
+        "timings_ms": {
+          "guard": 1152.3,
+          "embed": 49.2,
+          "retrieve": 0.8,
+          "rerank": 3780.5,
+          "generate": 3771.0,
+          "total": 8754.6
+        },
+        "kind": "unanswerable",
+        "correct": true
+      }
+    ]
+  },
+  "changed_correctness": [
+    "q07",
+    "q12",
+    "q16",
+    "q29"
+  ]
+}

@@ -16,6 +16,7 @@
 - {name: GUARD_FAIL_MODE, value: {{ .Values.guard.failMode | quote }}}
 - {name: GUARD_DEBUG, value: {{ .Values.guard.debugEndpoint | quote }}}
 - {name: RERANK_ENABLED, value: {{ .Values.rerank.enabled | quote }}}
+- {name: RERANK_DEFAULT, value: {{ .Values.rerank.default | quote }}}
 - {name: RERANK_URL, value: "http://{{ .Release.Name }}-rerank:8080/v1"}
 - {name: RERANK_MODEL, value: {{ .Values.rerank.servedName | quote }}}
 - {name: RERANK_CANDIDATES, value: {{ .Values.rerank.candidates | quote }}}

@@ -30,6 +30,8 @@ class Settings:
     guard_timeout_s: float = field(default_factory=lambda: float(_env("GUARD_TIMEOUT_S", "10")))
     guard_debug: bool = field(default_factory=lambda: _env("GUARD_DEBUG", "false").lower() == "true")
     rerank_enabled: bool = field(default_factory=lambda: _env("RERANK_ENABLED", "false").lower() == "true")
+    # rerank requests that do not say otherwise (the A/B showed better retrieval, same answer accuracy, +3.8 s on CPU)
+    rerank_default: bool = field(default_factory=lambda: _env("RERANK_DEFAULT", "false").lower() == "true")
     rerank_url: str = field(default_factory=lambda: _env("RERANK_URL", "http://rerank:8080/v1"))
     rerank_model: str = field(default_factory=lambda: _env("RERANK_MODEL", "bge-reranker-v2-m3"))
     rerank_candidates: int = field(default_factory=lambda: int(_env("RERANK_CANDIDATES", "12")))

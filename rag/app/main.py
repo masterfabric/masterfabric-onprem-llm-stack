@@ -103,7 +103,7 @@ def ask(req: Ask) -> dict:
             verdict.rules.append(rule)
             guard = {"error": e.__class__.__name__}
 
-    use_rerank = settings.rerank_enabled if req.rerank is None else req.rerank
+    use_rerank = settings.rerank_enabled and (settings.rerank_default if req.rerank is None else req.rerank)
     k = req.top_k or settings.top_k
     t = time.perf_counter()
     qvec = clients.embed([verdict.text], prefix=QUERY_PREFIX)[0]

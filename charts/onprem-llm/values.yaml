@@ -65,6 +65,8 @@ guard:
 # Cross-encoder reranker (BAAI bge-reranker-v2-m3, Apache-2.0) over the top RERANK_CANDIDATES chunks.
 rerank:
   enabled: true
+  # rerank only when the request asks for it ({"rerank": true}); see ADR 0006 for the measured trade-off
+  default: false
   servedName: bge-reranker-v2-m3
   image: ghcr.io/ggml-org/llama.cpp:server-b12464
   model:

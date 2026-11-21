@@ -1,0 +1,146 @@
+{
+    "stage_seconds": 30,
+    "stages": {
+        "llm_c1": {
+            "vus": 1,
+            "requests": 47,
+            "rps": 1.567,
+            "latency_ms": {
+                "avg": 627.1,
+                "p50": 619.6,
+                "p90": 630.9,
+                "p95": 632.5,
+                "max": 934.4
+            },
+            "completion_tokens_total": 2867,
+            "output_tokens_per_s": 95.57
+        },
+        "llm_c2": {
+            "vus": 2,
+            "requests": 54,
+            "rps": 1.8,
+            "latency_ms": {
+                "avg": 1127.7,
+                "p50": 1128.5,
+                "p90": 1143.6,
+                "p95": 1150.2,
+                "max": 1156.4
+            },
+            "completion_tokens_total": 3294,
+            "output_tokens_per_s": 109.8
+        },
+        "llm_c4": {
+            "vus": 4,
+            "requests": 123,
+            "rps": 4.1,
+            "latency_ms": {
+                "avg": 992.3,
+                "p50": 953.2,
+                "p90": 1003.6,
+                "p95": 1047.5,
+                "max": 1814
+            },
+            "completion_tokens_total": 4796,
+            "output_tokens_per_s": 159.87
+        },
+        "llm_c8": {
+            "vus": 8,
+            "requests": 105,
+            "rps": 3.5,
+            "latency_ms": {
+                "avg": 2400.7,
+                "p50": 2206.5,
+                "p90": 3049.6,
+                "p95": 3052.3,
+                "max": 3126.5
+            },
+            "completion_tokens_total": 5215,
+            "output_tokens_per_s": 173.83
+        },
+        "rag_c1": {
+            "vus": 1,
+            "requests": 83,
+            "rps": 2.767,
+            "latency_ms": {
+                "avg": 364.5,
+                "p50": 285.3,
+                "p90": 469.7,
+                "p95": 472,
+                "max": 2376.1
+            },
+            "completion_tokens_total": 1588,
+            "output_tokens_per_s": 52.93
+        },
+        "rag_c2": {
+            "vus": 2,
+            "requests": 119,
+            "rps": 3.967,
+            "latency_ms": {
+                "avg": 506.5,
+                "p50": 458.1,
+                "p90": 750.4,
+                "p95": 756.7,
+                "max": 818.5
+            },
+            "completion_tokens_total": 2281,
+            "output_tokens_per_s": 76.03
+        },
+        "rag_c4": {
+            "vus": 4,
+            "requests": 55,
+            "rps": 1.833,
+            "latency_ms": {
+                "avg": 2244.2,
+                "p50": 776.7,
+                "p90": 4971.6,
+                "p95": 5984.1,
+                "max": 9951.3
+            },
+            "completion_tokens_total": 1118,
+            "output_tokens_per_s": 37.27
+        },
+        "rag_c8": {
+            "vus": 8,
+            "requests": 40,
+            "rps": 1.333,
+            "latency_ms": {
+                "avg": 6659.4,
+                "p50": 6429.2,
+                "p90": 9436.1,
+                "p95": 9503.4,
+                "max": 10213.4
+            },
+            "completion_tokens_total": 838,
+            "output_tokens_per_s": 27.93
+        },
+        "guard_c16": {
+            "vus": 16,
+            "requests": 93080,
+            "rps": 4654,
+            "latency_ms": {
+                "avg": 3.4,
+                "p50": 3.2,
+                "p90": 4.4,
+                "p95": 5.5,
+                "max": 41.9
+            },
+            "completion_tokens_total": null,
+            "output_tokens_per_s": null
+        },
+        "guard_c64": {
+            "vus": 64,
+            "requests": 100306,
+            "rps": 5015.3,
+            "latency_ms": {
+                "avg": 12.7,
+                "p50": 12.2,
+                "p90": 15.7,
+                "p95": 18.2,
+                "max": 87.4
+            },
+            "completion_tokens_total": null,
+            "output_tokens_per_s": null
+        }
+    },
+    "errors": 6
+}

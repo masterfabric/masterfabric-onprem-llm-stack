@@ -114,16 +114,17 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--api", default="http://127.0.0.1:48080")
     ap.add_argument("--skip-quality", action="store_true")
+    ap.add_argument("--tag", default="", help="suffix for the result files, e.g. _v1_1 keeps the v1.0 baseline")
     args = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     with httpx.Client(timeout=300) as client:
         if not args.skip_quality:
             q = quality(client, args.api)
-            (OUT / "eval_quality.json").write_text(json.dumps(q, indent=2))
+            (OUT / f"eval_quality{args.tag}.json").write_text(json.dumps(q, indent=2))
             print(json.dumps(q["summary"], indent=1))
         g = guardrails(client, args.api)
         g["indirect_injection"] = indirect(client, args.api)
-        (OUT / "eval_guardrails.json").write_text(json.dumps(g, indent=2))
+        (OUT / f"eval_guardrails{args.tag}.json").write_text(json.dumps(g, indent=2))
         print(json.dumps({k: v for k, v in g.items() if k != "rows"}, indent=1)[:3000])
 
 

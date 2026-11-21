@@ -1,5 +1,8 @@
 {{- if .Values.networkPolicy.enabled }}
-{{- range $component := list "llm" "embed" "pgvector" }}
+{{- $components := list "llm" "embed" "pgvector" }}
+{{- if .Values.guard.enabled }}{{ $components = append $components "guard" }}{{ end }}
+{{- if .Values.rerank.enabled }}{{ $components = append $components "rerank" }}{{ end }}
+{{- range $component := $components }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -13,6 +16,12 @@ spec:
     - from:
         - podSelector:
             matchLabels: {onprem-llm/model-client: "true"}
+    {{- if and $.Values.monitoring.enabled (ne $component "pgvector") }}
+    - from:                     # Prometheus may read /metrics on the model servers, nothing else
+        - podSelector:
+            matchLabels: {onprem-llm/metrics-scraper: "true"}
+      ports: [{port: 8080, protocol: TCP}]
+    {{- end }}
 ---
 {{- end }}
 {{- end }}

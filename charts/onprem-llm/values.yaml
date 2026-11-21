@@ -43,6 +43,59 @@ embed:
     limits: {cpu: "1", memory: 512Mi}
   storage: {size: 1Gi, storageClass: ""}
 
+# Second input-guardrail layer: an LLM classifier (IBM Granite Guardian 3.2 3B-A800M, Apache-2.0).
+guard:
+  enabled: true
+  servedName: granite-guardian-3.2-3b-a800m
+  image: ghcr.io/ggml-org/llama.cpp:server-b12464
+  model:
+    file: granite-guardian-3.2-3b-a800m-Q4_K_M.gguf
+    url: https://huggingface.co/ibm-research/granite-guardian-3.2-3b-a800m-GGUF/resolve/main/granite-guardian-3.2-3b-a800m-Q4_K_M.gguf
+    sha256: 72735ad1cb9832df3141a4477cb1035228ba029e0b9076802305a07c870ccfb5
+  threshold: 0.6              # frozen on the development set (ADR 0005)
+  failMode: closed            # closed: block when the classifier is unreachable; open: answer and log
+  debugEndpoint: true         # POST /v1/guard returns the score (lab/evaluation only; disable in production)
+  threads: 2
+  extraArgs: [--ctx-size, "4096", --parallel, "2"]
+  resources:
+    requests: {cpu: 500m, memory: 2560Mi}
+    limits: {cpu: "2", memory: 3Gi}
+  storage: {size: 3Gi, storageClass: ""}
+
+# Cross-encoder reranker (BAAI bge-reranker-v2-m3, Apache-2.0) over the top RERANK_CANDIDATES chunks.
+rerank:
+  enabled: true
+  servedName: bge-reranker-v2-m3
+  image: ghcr.io/ggml-org/llama.cpp:server-b12464
+  model:
+    file: bge-reranker-v2-m3-Q8_0.gguf
+    url: https://huggingface.co/gpustack/bge-reranker-v2-m3-GGUF/resolve/main/bge-reranker-v2-m3-Q8_0.gguf
+    sha256: a43c7c9b11a4c1517e5bf95151960e1621d1b72f7a493364b01e386cf1aaa1d3
+  candidates: 12
+  threads: 2
+  extraArgs: [--reranking, --ctx-size, "8192", --batch-size, "8192", --ubatch-size, "8192", --parallel, "1"]
+  resources:
+    requests: {cpu: 500m, memory: 768Mi}
+    limits: {cpu: "2", memory: 1536Mi}
+  storage: {size: 1Gi, storageClass: ""}
+
+# Prometheus + Grafana inside the release (lab). In production use the cluster's monitoring stack and
+# keep only the scrape annotations and the dashboard JSON.
+monitoring:
+  enabled: true
+  prometheus:
+    image: prom/prometheus:v3.16.0
+    retention: 2d
+    resources:
+      requests: {cpu: 100m, memory: 256Mi}
+      limits: {cpu: 500m, memory: 512Mi}
+  grafana:
+    image: grafana/grafana:13.2.6
+    anonymousViewer: true     # lab only: reachable through kubectl port-forward on 127.0.0.1
+    resources:
+      requests: {cpu: 100m, memory: 128Mi}
+      limits: {cpu: 500m, memory: 384Mi}
+
 modelDownloader:
   image: curlimages/curl:8.11.1
 

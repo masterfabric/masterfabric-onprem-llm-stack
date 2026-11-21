@@ -4,7 +4,7 @@ CLUSTER := mf-llm
 RELEASE := llm
 NS      := llm
 CHART   := charts/onprem-llm
-IMAGES  := ghcr.io/ggml-org/llama.cpp:server-b12464 pgvector/pgvector:pg16 curlimages/curl:8.11.1
+IMAGES  := ghcr.io/ggml-org/llama.cpp:server-b12464 pgvector/pgvector:pg16 curlimages/curl:8.11.1 prom/prometheus:v3.16.0 grafana/grafana:13.2.6
 API     := http://127.0.0.1:48080
 PY      ?= .venv/bin/python
 

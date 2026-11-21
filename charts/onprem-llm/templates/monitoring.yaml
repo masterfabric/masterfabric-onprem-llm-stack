@@ -1,0 +1,150 @@
+{{- if .Values.monitoring.enabled }}
+{{- $m := .Values.monitoring }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-prometheus
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+data:
+  prometheus.yml: |
+    global: {scrape_interval: 10s, evaluation_interval: 10s}
+    scrape_configs:
+      - job_name: rag
+        static_configs: [{targets: ["{{ .Release.Name }}-rag:8000"], labels: {component: rag}}]
+      {{- range $c := list "llm" "embed" "guard" "rerank" }}
+      {{- if or (has $c (list "llm" "embed")) (index $.Values $c).enabled }}
+      - job_name: {{ $c }}
+        static_configs: [{targets: ["{{ $.Release.Name }}-{{ $c }}:8080"], labels: {component: {{ $c }}}}]
+      {{- end }}
+      {{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-prometheus
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {{- include "onprem-llm.selector" (dict "root" . "component" "prometheus") | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "onprem-llm.labels" . | nindent 8 }}
+        app.kubernetes.io/component: prometheus
+        onprem-llm/metrics-scraper: "true"
+      annotations:
+        checksum/config: {{ printf "%s" .Values.monitoring | sha256sum | trunc 12 }}
+    spec:
+      securityContext: {runAsNonRoot: true, runAsUser: 65534, fsGroup: 65534, seccompProfile: {type: RuntimeDefault}}
+      containers:
+        - name: prometheus
+          image: {{ $m.prometheus.image }}
+          args: [--config.file=/etc/prometheus/prometheus.yml, --storage.tsdb.path=/prometheus,
+                 --storage.tsdb.retention.time={{ $m.prometheus.retention }}, --web.listen-address=:9090]
+          ports: [{name: http, containerPort: 9090}]
+          readinessProbe: {httpGet: {path: /-/ready, port: http}, periodSeconds: 10}
+          securityContext: {allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: {drop: [ALL]}}
+          volumeMounts:
+            - {name: config, mountPath: /etc/prometheus}
+            - {name: data, mountPath: /prometheus}
+          resources: {{- toYaml $m.prometheus.resources | nindent 12 }}
+      volumes:
+        - name: config
+          configMap: {name: {{ .Release.Name }}-prometheus}
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-prometheus
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+spec:
+  selector: {{- include "onprem-llm.selector" (dict "root" . "component" "prometheus") | nindent 4 }}
+  ports: [{name: http, port: 9090, targetPort: http}]
+---
+{{- $secret := lookup "v1" "Secret" .Release.Namespace (printf "%s-grafana" .Release.Name) }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name }}-grafana
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+type: Opaque
+data:
+  admin-password: {{ if $secret }}{{ index $secret.data "admin-password" }}{{ else }}{{ randAlphaNum 24 | b64enc }}{{ end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-grafana
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+data:
+  datasource.yaml: |
+    apiVersion: 1
+    datasources:
+      - {name: Prometheus, uid: prometheus, type: prometheus, access: proxy, isDefault: true,
+         url: "http://{{ .Release.Name }}-prometheus:9090"}
+  dashboards.yaml: |
+    apiVersion: 1
+    providers:
+      - {name: onprem-llm, folder: MasterFabric, type: file, options: {path: /var/lib/grafana/dashboards}}
+  rag-stack.json: |
+{{ .Files.Get "dashboards/rag-stack.json" | indent 4 }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-grafana
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+    app.kubernetes.io/component: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {{- include "onprem-llm.selector" (dict "root" . "component" "grafana") | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "onprem-llm.labels" . | nindent 8 }}
+        app.kubernetes.io/component: grafana
+      annotations:
+        checksum/dashboard: {{ .Files.Get "dashboards/rag-stack.json" | sha256sum | trunc 12 }}
+    spec:
+      securityContext: {runAsNonRoot: true, runAsUser: 472, fsGroup: 472, seccompProfile: {type: RuntimeDefault}}
+      containers:
+        - name: grafana
+          image: {{ $m.grafana.image }}
+          env:
+            - {name: GF_SECURITY_ADMIN_USER, value: admin}
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom: {secretKeyRef: {name: {{ .Release.Name }}-grafana, key: admin-password}}
+            - {name: GF_AUTH_ANONYMOUS_ENABLED, value: {{ $m.grafana.anonymousViewer | quote }}}
+            - {name: GF_AUTH_ANONYMOUS_ORG_ROLE, value: Viewer}
+            - {name: GF_ANALYTICS_REPORTING_ENABLED, value: "false"}
+            - {name: GF_ANALYTICS_CHECK_FOR_UPDATES, value: "false"}
+            - {name: GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES, value: "false"}
+            - {name: GF_NEWS_NEWS_FEED_ENABLED, value: "false"}
+            - {name: GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH, value: /var/lib/grafana/dashboards/rag-stack.json}
+          ports: [{name: http, containerPort: 3000}]
+          readinessProbe: {httpGet: {path: /api/health, port: http}, periodSeconds: 10}
+          securityContext: {allowPrivilegeEscalation: false, capabilities: {drop: [ALL]}}
+          volumeMounts:
+            - {name: provisioning, mountPath: /etc/grafana/provisioning/datasources/datasource.yaml, subPath: datasource.yaml}
+            - {name: provisioning, mountPath: /etc/grafana/provisioning/dashboards/dashboards.yaml, subPath: dashboards.yaml}
+            - {name: provisioning, mountPath: /var/lib/grafana/dashboards/rag-stack.json, subPath: rag-stack.json}
+            - {name: data, mountPath: /var/lib/grafana}
+          resources: {{- toYaml $m.grafana.resources | nindent 12 }}
+      volumes:
+        - name: provisioning
+          configMap: {name: {{ .Release.Name }}-grafana}
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-grafana
+  labels: {{- include "onprem-llm.labels" . | nindent 4 }}
+spec:
+  selector: {{- include "onprem-llm.selector" (dict "root" . "component" "grafana") | nindent 4 }}
+  ports: [{name: http, port: 3000, targetPort: http}]
+{{- end }}

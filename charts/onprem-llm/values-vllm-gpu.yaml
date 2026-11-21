@@ -1,6 +1,6 @@
 # GPU nodes (NVIDIA, CUDA): serve the same model with vLLM instead of llama.cpp.
 #   helm upgrade --install llm charts/onprem-llm -f charts/onprem-llm/values-vllm-gpu.yaml
-# Rendered and linted in CI of this repo; not run in the lab (no NVIDIA GPU on the build machine).
+# Rendered and linted by `make lint`; not run in the lab (no NVIDIA GPU on the build machine).
 llm:
   backend: vllm
   vllm:

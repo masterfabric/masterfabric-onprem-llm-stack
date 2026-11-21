@@ -64,9 +64,94 @@ def eval_chart():
     plt.close(fig)
 
 
+def classifier_chart():
+    d = json.loads((RESULTS / "eval_classifier.json").read_text())
+    rows, thr = d["rows"], d["summary"]["threshold"]
+    groups = [
+        ("dev · rule attacks", lambda r: r["set"] == "dev" and r["kind"] == "attack" and r["category"] != "evasion", HEX["GREY"]),
+        ("dev · 4 evasions", lambda r: r["category"] == "evasion", HEX["ORANGE"]),
+        ("dev · benign questions", lambda r: r["set"] == "dev" and r["category"] == "question", HEX["GREEN"]),
+        ("dev · PII questions", lambda r: r["category"] == "pii", HEX["PURPLE"]),
+        ("held-out · attacks", lambda r: r["set"] == "heldout" and r["kind"] == "attack", HEX["RED"]),
+        ("held-out · hard benign", lambda r: r["set"] == "heldout" and r["kind"] == "benign", HEX["ICE"]),
+    ]
+    import numpy as np
+    rng = np.random.default_rng(7)
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(14, 5.2), gridspec_kw={"width_ratios": [1.25, 1]})
+    for i, (name, f, col) in enumerate(groups):
+        sc = [r["score"] for r in rows if f(r)]
+        a1.scatter(sc, i + rng.uniform(-0.18, 0.18, len(sc)), s=34, color=col, alpha=0.9, edgecolor="none")
+        above = sum(s >= thr for s in sc)
+        a1.text(1.02, i, f"{above}/{len(sc)} ≥ {thr}", va="center", fontsize=10, color=col)
+    a1.axvline(thr, color=HEX["YELLOW"], ls="--", lw=1.5)
+    a1.set_yticks(range(len(groups)), [g[0] for g in groups])
+    a1.invert_yaxis()
+    a1.set_xlim(0, 1.0)
+    a1.set_xlabel("Granite Guardian risk score  P(Yes)")
+    a1.set_title("Classifier score per item (threshold 0.6 fixed on dev)", loc="left")
+    ts = [float(t) for t in d["summary"]["sweep"]]
+    sw = d["summary"]["sweep"]
+    h = sw[str(thr)]["heldout"]
+    a2.plot(ts, [sw[str(t)]["heldout"]["caught"] / h["attacks"] for t in ts], "-o", color=HEX["RED"], label="held-out attacks caught")
+    a2.plot(ts, [sw[str(t)]["heldout"]["benign_blocked"] / h["benign"] for t in ts], "-o", color=HEX["ICE"], label="held-out hard benign blocked")
+    a2.plot(ts, [sw[str(t)]["dev"]["benign_blocked"] / sw[str(t)]["dev"]["benign"] for t in ts], "--o", color=HEX["GREEN"],
+            label="dev benign + PII blocked")
+    a2.axvline(thr, color=HEX["YELLOW"], ls="--", lw=1.5)
+    a2.set_xlabel("threshold (rules + classifier)")
+    a2.set_ylabel("share")
+    a2.set_ylim(-0.03, 1.05)
+    a2.legend(fontsize=9)
+    a2.set_title("Threshold sweep", loc="left")
+    fig.tight_layout()
+    fig.savefig(IMG / "classifier_eval.png")
+    plt.close(fig)
+
+
+def rerank_chart():
+    d = json.loads((RESULTS / "eval_rerank.json").read_text())
+    v, r = d["vector_only"]["summary"], d["reranked"]["summary"]
+    import numpy as np
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(14, 4.8), gridspec_kw={"width_ratios": [1.3, 1]})
+    m = [("hit_at_1", "hit@1"), ("hit_at_4", "hit@4"), ("mrr", "MRR"), ("answer_accuracy", "answer accuracy")]
+    x = np.arange(len(m))
+    for off, s, col, lab in ((-0.2, v, HEX["GREY"], "pgvector top 4"), (0.2, r, HEX["YELLOW"], "top 12 → reranker → top 4")):
+        bars = a1.bar(x + off, [s[k] for k, _ in m], 0.38, color=col, label=lab)
+        for b in bars:
+            a1.text(b.get_x() + b.get_width() / 2, b.get_height() + 0.02, f"{b.get_height():.2f}", ha="center", fontsize=9)
+    a1.set_xticks(x, [l for _, l in m])
+    a1.set_ylim(0, 1.32)
+    a1.legend(loc="upper center", ncols=2)
+    a1.set_title("Retrieval improves, answers do not (30 answerable questions)", loc="left")
+
+    def med(rows, k):
+        vals = [x["timings_ms"].get(k, 0) for x in rows if x["timings_ms"]]
+        return float(np.median(vals)) / 1000 if vals else 0
+    stages = [("guard", HEX["RED"]), ("embed", HEX["PURPLE"]), ("retrieve", HEX["ORANGE"]), ("rerank", HEX["YELLOW"]),
+              ("generate", HEX["ICE"])]
+    for i, (key, name) in enumerate((("vector_only", "pgvector"), ("reranked", "reranked"))):
+        left = 0.0
+        for st, col in stages:
+            w = med(d[key]["rows"], st)
+            a2.barh(i, w, left=left, color=col, label=st if i == 1 else None)
+            if w > 0.5:
+                a2.text(left + w / 2, i, f"{w:.1f}", ha="center", va="center", fontsize=9, color=HEX["BG"])
+            left += w
+    a2.set_yticks([0, 1], ["pgvector", "reranked"])
+    a2.set_xlabel("median seconds per stage (CPU, k3d)")
+    a2.legend(fontsize=9, ncols=5, loc="upper center", bbox_to_anchor=(0.5, -0.22))
+    a2.set_title("Where the time goes", loc="left")
+    fig.tight_layout()
+    fig.savefig(IMG / "rerank_ab.png")
+    plt.close(fig)
+
+
 if __name__ == "__main__":
     IMG.mkdir(parents=True, exist_ok=True)
     eval_chart()
+    if (RESULTS / "eval_classifier.json").exists():
+        classifier_chart()
+    if (RESULTS / "eval_rerank.json").exists():
+        rerank_chart()
     if (RESULTS / "load_k6.json").exists():
         load_chart()
     print("charts written")

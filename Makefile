@@ -8,7 +8,7 @@ IMAGES  := ghcr.io/ggml-org/llama.cpp:server-b12464 pgvector/pgvector:pg16 curli
 API     := http://127.0.0.1:48080
 PY      ?= .venv/bin/python
 
-.PHONY: help cluster image deploy status ask test lint eval load down destroy
+.PHONY: help cluster image deploy status ask test lint eval eval-guard eval-rerank dashboards load down destroy
 
 help: ## Show targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-10s\033[0m %s\n",$$1,$$2}'
@@ -40,6 +40,16 @@ lint: ## helm lint + render both value sets
 
 eval: ## Answer-quality and guardrail evaluation through the ingress -> docs/results/
 	$(PY) eval/run_eval.py --api $(API)
+
+eval-guard: ## Rules + LLM classifier on dev and held-out sets -> docs/results/eval_classifier.json
+	$(PY) eval/run_guard_eval.py --api $(API)
+
+eval-rerank: ## Same questions with and without the reranker -> docs/results/eval_rerank.json
+	$(PY) eval/run_rerank_eval.py --api $(API)
+
+dashboards: ## Port-forward Grafana to 127.0.0.1:43000 and Prometheus to 127.0.0.1:49090 (Ctrl-C to stop)
+	kubectl -n $(NS) port-forward svc/$(RELEASE)-prometheus 49090:9090 & \
+	kubectl -n $(NS) port-forward svc/$(RELEASE)-grafana 43000:3000
 
 load: ## k6 load tests inside the cluster -> docs/results/load_*.json
 	scripts/load.sh

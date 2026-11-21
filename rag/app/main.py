@@ -121,7 +121,8 @@ def healthz() -> dict:
 def readyz() -> dict:
     try:
         with pool.connection(timeout=2) as conn:
-            n = conn.execute("SELECT count(*) FROM chunks").fetchone()[0]
+            exists = conn.execute("SELECT to_regclass('chunks') IS NOT NULL").fetchone()[0]
+            n = conn.execute("SELECT count(*) FROM chunks").fetchone()[0] if exists else 0
         for url in (settings.llm_url, settings.embed_url):
             httpx.get(url.removesuffix("/v1") + "/health", timeout=2).raise_for_status()
     except Exception as e:  # noqa: BLE001 - readiness reports any dependency failure

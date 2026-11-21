@@ -6,3 +6,6 @@
 | [0002](0002-pgvector.md) | pgvector instead of Milvus for the retrieval store |
 | [0003](0003-deterministic-guardrails.md) | Deterministic guardrails first, measured against evasions |
 | [0004](0004-one-chart-networkpolicies.md) | One Helm chart, models fetched into PVCs, NetworkPolicies by label |
+| [0005](0005-llm-guard-classifier.md) | An LLM risk classifier (Granite Guardian 3.2) behind the rules, threshold fixed before the held-out test |
+| [0006](0006-cross-encoder-reranker.md) | A cross-encoder reranker, deployed but used on request |
+| [0007](0007-prometheus-grafana.md) | Prometheus and Grafana inside the chart, static scrape targets |

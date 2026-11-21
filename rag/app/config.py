@@ -22,6 +22,17 @@ class Settings:
     max_tokens: int = field(default_factory=lambda: int(_env("MAX_TOKENS", "200")))
     max_question_chars: int = field(default_factory=lambda: int(_env("MAX_QUESTION_CHARS", "1000")))
     request_timeout_s: float = field(default_factory=lambda: float(_env("REQUEST_TIMEOUT_S", "120")))
+    # second guardrail layer (LLM classifier) and reranker; both optional
+    guard_enabled: bool = field(default_factory=lambda: _env("GUARD_ENABLED", "false").lower() == "true")
+    guard_url: str = field(default_factory=lambda: _env("GUARD_URL", "http://guard:8080"))
+    guard_threshold: float = field(default_factory=lambda: float(_env("GUARD_THRESHOLD", "0.6")))
+    guard_fail_mode: str = field(default_factory=lambda: _env("GUARD_FAIL_MODE", "closed"))   # closed | open
+    guard_timeout_s: float = field(default_factory=lambda: float(_env("GUARD_TIMEOUT_S", "10")))
+    guard_debug: bool = field(default_factory=lambda: _env("GUARD_DEBUG", "false").lower() == "true")
+    rerank_enabled: bool = field(default_factory=lambda: _env("RERANK_ENABLED", "false").lower() == "true")
+    rerank_url: str = field(default_factory=lambda: _env("RERANK_URL", "http://rerank:8080/v1"))
+    rerank_model: str = field(default_factory=lambda: _env("RERANK_MODEL", "bge-reranker-v2-m3"))
+    rerank_candidates: int = field(default_factory=lambda: int(_env("RERANK_CANDIDATES", "12")))
     corpus_dir: str = field(default_factory=lambda: _env("CORPUS_DIR", "/app/corpus"))
 
 

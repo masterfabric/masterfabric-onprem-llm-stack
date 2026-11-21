@@ -27,3 +27,15 @@ def chat(messages: list[dict], max_tokens: int) -> dict:
                          "temperature": 0.0, "seed": 7})
     r.raise_for_status()
     return r.json()
+
+
+def rerank(query: str, documents: list[str]) -> list[float]:
+    """Cross-encoder relevance per document (bge-reranker-v2-m3 via llama.cpp /v1/rerank), in input order."""
+    r = _http.post(f"{settings.rerank_url}/rerank",
+                   json={"model": settings.rerank_model, "query": query, "documents": documents,
+                         "top_n": len(documents)})
+    r.raise_for_status()
+    scores = [0.0] * len(documents)
+    for item in r.json()["results"]:
+        scores[item["index"]] = float(item["relevance_score"])
+    return scores

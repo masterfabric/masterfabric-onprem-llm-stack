@@ -20,7 +20,7 @@ cluster: ## Create the k3d cluster (single node, ingress on 127.0.0.1:48080)
 image: ## Build the RAG API image and import it (and the pinned server images) into the cluster
 	docker build -t mf-rag-api:dev -f rag/Dockerfile .
 	for i in $(IMAGES); do docker image inspect $$i >/dev/null 2>&1 || docker pull -q $$i; done
-	k3d image import -c $(CLUSTER) mf-rag-api:dev $(IMAGES)
+	CLUSTER=$(CLUSTER) scripts/import_images.sh mf-rag-api:dev $(IMAGES)
 
 deploy: ## helm upgrade --install; waits for the models to download and load
 	helm upgrade --install $(RELEASE) $(CHART) -n $(NS) --create-namespace --wait --timeout 20m

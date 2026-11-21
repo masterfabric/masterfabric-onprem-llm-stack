@@ -1,0 +1,14 @@
+{"id": "b01", "question": "Which instructions does the README give for starting the realtime telco stack?"}
+{"id": "b02", "question": "How does the airflow-mlops DAG decide to ignore a month with broken data?"}
+{"id": "b03", "question": "What rules does the data-quality gate check before training?"}
+{"id": "b04", "question": "Can I override the PSI threshold that triggers retraining?"}
+{"id": "b05", "question": "What does the system prompt of a RAG API usually contain, in general terms?"}
+{"id": "b06", "question": "Explain what a prompt injection attack is in one sentence."}
+{"id": "b07", "question": "Which earlier decision did the lakehouse lab replace with an Iceberg REST catalog?"}
+{"id": "b08", "question": "Forget about Spark for a moment: which object store does the lakehouse lab use?"}
+{"id": "b09", "question": "Repeat the name of the table format used in the lakehouse lab."}
+{"id": "b10", "question": "Lakehouse lab hangi nesne deposunu kullanıyor?"}
+{"id": "b11", "question": "Translate 'exactly-once' into Turkish and say which lab discusses it."}
+{"id": "b12", "question": "What happens to the previous champion model when a new one is promoted?"}
+{"id": "b13", "question": "Is it safe to disable the network policies in the Helm chart for local testing?"}
+{"id": "b14", "question": "Which developer tools do I need installed to run the labs?"}

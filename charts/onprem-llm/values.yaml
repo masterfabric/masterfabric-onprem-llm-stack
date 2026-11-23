@@ -53,13 +53,14 @@ guard:
     url: https://huggingface.co/ibm-research/granite-guardian-3.2-3b-a800m-GGUF/resolve/main/granite-guardian-3.2-3b-a800m-Q4_K_M.gguf
     sha256: 72735ad1cb9832df3141a4477cb1035228ba029e0b9076802305a07c870ccfb5
   threshold: 0.6              # frozen on the development set (ADR 0005)
+  definition: override        # v1.1; "override_narrow" with threshold 0.55 is v1.2 (ADR 0008: more catches, more false blocks)
   failMode: closed            # closed: block when the classifier is unreachable; open: answer and log
   debugEndpoint: true         # POST /v1/guard returns the score (lab/evaluation only; disable in production)
   threads: 2
   extraArgs: [--ctx-size, "4096", --parallel, "2"]
   resources:
     requests: {cpu: 500m, memory: 2560Mi}
-    limits: {cpu: "2", memory: 3Gi}
+    limits: {cpu: "2", memory: 4Gi}   # 3Gi was OOMKilled during evaluation runs (ADR 0008)
   storage: {size: 3Gi, storageClass: ""}
 
 # Cross-encoder reranker (BAAI bge-reranker-v2-m3, Apache-2.0) over the top RERANK_CANDIDATES chunks.

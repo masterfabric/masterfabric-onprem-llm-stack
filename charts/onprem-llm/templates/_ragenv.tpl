@@ -13,6 +13,7 @@
 - {name: GUARD_ENABLED, value: {{ .Values.guard.enabled | quote }}}
 - {name: GUARD_URL, value: "http://{{ .Release.Name }}-guard:8080"}
 - {name: GUARD_THRESHOLD, value: {{ .Values.guard.threshold | quote }}}
+- {name: GUARD_DEFINITION, value: {{ .Values.guard.definition | default "override" | quote }}}
 - {name: GUARD_FAIL_MODE, value: {{ .Values.guard.failMode | quote }}}
 - {name: GUARD_DEBUG, value: {{ .Values.guard.debugEndpoint | quote }}}
 - {name: RERANK_ENABLED, value: {{ .Values.rerank.enabled | quote }}}

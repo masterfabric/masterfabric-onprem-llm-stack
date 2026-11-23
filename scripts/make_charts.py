@@ -145,6 +145,90 @@ def rerank_chart():
     plt.close(fig)
 
 
+def guard_v2_chart():
+    import numpy as np
+    d = json.loads((RESULTS / "eval_guard_v2.json").read_text())
+    rows = json.loads((RESULTS / "guard_v2_scores.json").read_text())["rows"]
+    thr1, thr2 = 0.6, d["chosen"]["threshold"]
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(15, 5.4), gridspec_kw={"width_ratios": [1.2, 1]})
+    h2 = [r for r in rows if r["set"] == "heldout2"]
+    h2.sort(key=lambda r: (r["kind"], r["scores"]["override"]))
+    for i, r in enumerate(h2):
+        a, b = r["scores"]["override"], r["scores"]["override_narrow"]
+        col = HEX["RED"] if r["kind"] == "attack" else HEX["ICE"]
+        a1.plot([a, b], [i, i], color=HEX["LINE"], lw=1.2, zorder=1)
+        a1.scatter([a], [i], s=26, color=HEX["GREY"], zorder=2)
+        a1.scatter([b], [i], s=30, color=col, zorder=3)
+    nb = sum(r["kind"] == "attack" for r in h2)
+    a1.axhline(nb - 0.5, color=HEX["LINE"], lw=1)
+    a1.axvline(thr1, color=HEX["GREY"], ls=":", lw=1.4)
+    a1.axvline(thr2, color=HEX["YELLOW"], ls="--", lw=1.4)
+    a1.text(thr1 + 0.01, len(h2) - 0.3, "v1.1 at 0.6", color=HEX["GREY"], fontsize=9)
+    a1.text(thr2 - 0.01, len(h2) - 0.3, f"v1.2 at {thr2}", color=HEX["YELLOW"], fontsize=9, ha="right")
+    a1.set_yticks([nb / 2, nb + (len(h2) - nb) / 2], ["24 attacks", "20 hard benign"])
+    a1.set_xlim(0, 1)
+    a1.set_xlabel("risk score: grey = v1.1 definition, colour = v1.2 definition")
+    a1.set_title("Fresh held-out v2: each item under both definitions", loc="left")
+    sets = [("dev", "dev\n22 + 39"), ("heldout1", "held-out v1\n16 + 14\n(used to select)"),
+            ("heldout2", "held-out v2\n24 + 20\n(fresh)")]
+    x = np.arange(len(sets))
+    for off, key, col, lab in ((-0.2, "v1_1_same_backend", HEX["GREY"], "v1.1: override at 0.6"),
+                               (0.2, "v1_2", HEX["YELLOW"], f"v1.2: override_narrow at {thr2}")):
+        caught = [d[key][s]["caught"] / d[key][s]["attacks"] for s, _ in sets]
+        fb = [d[key][s]["benign_blocked"] / d[key][s]["benign"] for s, _ in sets]
+        a2.bar(x + off, caught, 0.38, color=col, label=lab + " (attacks caught)")
+        a2.bar(x + off, [-f for f in fb], 0.38, color=col, alpha=0.45)
+        for xi, s, c, f in zip(x + off, sets, caught, fb):
+            a2.text(xi, c + 0.03, f"{d[key][s[0]]['caught']}/{d[key][s[0]]['attacks']}", ha="center", fontsize=9)
+            a2.text(xi, -f - 0.08, f"{d[key][s[0]]['benign_blocked']}/{d[key][s[0]]['benign']}", ha="center", fontsize=9)
+    a2.axhline(0, color=HEX["WHITE"], lw=0.8)
+    a2.set_xticks(x, [l for _, l in sets])
+    a2.set_ylim(-0.45, 1.25)
+    a2.set_ylabel("attacks caught (up) · benign blocked (down)")
+    a2.legend(fontsize=9, loc="upper center", ncols=1)
+    a2.set_title("Rules + classifier, deployed CPU guard pod", loc="left")
+    fig.tight_layout()
+    fig.savefig(IMG / "guard_v2.png")
+    plt.close(fig)
+
+
+def rag_judge_chart():
+    import numpy as np
+    d = json.loads((RESULTS / "eval_rag_judge.json").read_text())
+    s, san = d["summary"], d["judge_sanity"]
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(15, 4.9), gridspec_kw={"width_ratios": [1.35, 1]})
+    m = [("faithfulness", "faithfulness"), ("answer_relevancy", "answer relevancy"),
+         ("context_precision", "context precision"), ("context_recall", "context recall")]
+    x = np.arange(len(m))
+    for off, key, col, lab in ((-0.2, "vector", HEX["GREY"], "pgvector top 4"),
+                               (0.2, "rerank", HEX["YELLOW"], "top 12 → reranker → top 4")):
+        bars = a1.bar(x + off, [s[key][k] for k, _ in m], 0.38, color=col, label=lab)
+        for b in bars:
+            a1.text(b.get_x() + b.get_width() / 2, b.get_height() + 0.02, f"{b.get_height():.2f}", ha="center", fontsize=9)
+    a1.set_xticks(x, [l for _, l in m])
+    a1.set_ylim(0, 1.25)
+    a1.legend(loc="upper center", ncols=2, fontsize=9)
+    a1.set_title("RAGAS-style metrics, 30 questions, Qwen2.5-7B judge", loc="left")
+    labels = ["faithfulness\nvector", "faithfulness\nrerank", "relevancy\nvector", "relevancy\nrerank"]
+    real = [s["vector"]["faithfulness"], s["rerank"]["faithfulness"], s["vector"]["answer_relevancy"],
+            s["rerank"]["answer_relevancy"]]
+    sw = [san["vector"]["faithfulness_swapped_contexts"], san["rerank"]["faithfulness_swapped_contexts"],
+          san["vector"]["answer_relevancy_swapped_question"], san["rerank"]["answer_relevancy_swapped_question"]]
+    x = np.arange(4)
+    for off, vals, col, lab in ((-0.2, real, HEX["GREEN"], "real pairs"),
+                                (0.2, sw, HEX["RED"], "answer paired with another question's contexts / question")):
+        bars = a2.bar(x + off, vals, 0.38, color=col, label=lab)
+        for b in bars:
+            a2.text(b.get_x() + b.get_width() / 2, b.get_height() + 0.02, f"{b.get_height():.2f}", ha="center", fontsize=9)
+    a2.set_xticks(x, labels)
+    a2.set_ylim(0, 1.25)
+    a2.legend(loc="upper center", fontsize=9)
+    a2.set_title("Does the judge notice a mismatch?", loc="left")
+    fig.tight_layout()
+    fig.savefig(IMG / "rag_judge.png")
+    plt.close(fig)
+
+
 if __name__ == "__main__":
     IMG.mkdir(parents=True, exist_ok=True)
     eval_chart()
@@ -152,6 +236,10 @@ if __name__ == "__main__":
         classifier_chart()
     if (RESULTS / "eval_rerank.json").exists():
         rerank_chart()
+    if (RESULTS / "eval_guard_v2.json").exists():
+        guard_v2_chart()
+    if (RESULTS / "eval_rag_judge.json").exists():
+        rag_judge_chart()
     if (RESULTS / "load_k6.json").exists():
         load_chart()
     print("charts written")

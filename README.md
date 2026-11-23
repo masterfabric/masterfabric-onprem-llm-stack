@@ -23,6 +23,8 @@ Docker VM has no GPU access; see [ADR 0001](docs/adr/0001-llamacpp-in-lab-vllm-i
 | Guardrails, rules only (v1.0) | **22/26**: 18/18 injection, extraction, jailbreak, delimiter, encoded and exfiltration prompts blocked; 4/4 PII prompts masked; **0/4** paraphrase evasions caught |
 | Guardrails + LLM classifier (v1.1) | **24/26**: evasions **4/4** blocked; but 2/4 PII questions now blocked too (false positives) · 0/35 benign questions blocked · classifier p50 1.17 s on CPU |
 | Held-out attacks (written before the classifier) | rules **0/16** → rules + classifier **10/16** · hard benign questions blocked 1/14 · threshold 0.6 fixed on dev |
+| Guard v1.2 on a fresh held-out set | attacks caught **18/24 → 22/24**, benign blocked **2/20 → 4/20**; kept optional, v1.1 stays default |
+| RAG judge (Qwen2.5-7B, RAGAS-style) | faithfulness 0.97 / 0.92 (vector / reranked, after a manual read), context precision **0.65 → 0.88** with the reranker |
 | Reranker (bge-reranker-v2-m3) | hit@1 **0.833 → 0.933**, hit@4 0.933 → 1.000 · answer accuracy unchanged (0.800) · +3.8 s p50 on CPU, so on request only |
 | Monitoring | Prometheus scrapes 5 targets (API + 4 llama.cpp servers), one provisioned Grafana dashboard |
 | LLM load (k6, in-cluster) | 1 user: 1.57 req/s, 96 output tok/s · 4 users: 4.1 req/s, **160 tok/s** · 8 users: 174 tok/s, p95 3.05 s |
@@ -32,7 +34,7 @@ Docker VM has no GPU access; see [ADR 0001](docs/adr/0001-llamacpp-in-lab-vllm-i
 ---
 
 [Architecture](#architecture) · [How a question is answered](#how-a-question-is-answered) ·
-[Results](#results) · [Second guardrail layer](#second-guardrail-layer-llm-classifier) · [Reranker](#reranker-ab) ·
+[Results](#results) · [Second guardrail layer](#second-guardrail-layer-llm-classifier) · [Reranker](#reranker-ab) · [Guard v1.2](#guard-v12-on-a-fresh-held-out-set) · [RAG judge](#rag-quality-with-a-local-judge) ·
 [Monitoring](#monitoring) · [Quickstart](#quickstart) · [Helm chart](#helm-chart) · [Enterprise mapping](#enterprise-mapping) ·
 [Decisions](#design-decisions) · [Limitations](#limitations) · [Roadmap](#roadmap) · [License](#license)
 
@@ -197,13 +199,63 @@ which chunks sat next to it, and the 1.5B generator is sensitive to that. Scorin
 cross-encoder on 2 CPU threads costs 3.8 s, so the chart deploys the reranker but leaves it off unless
 the request asks (`rerank.default: false`).
 
+### Guard v1.2 on a fresh held-out set
+
+<p align="center"><img src="docs/images/guard_v2.png" alt="Held-out v2 scores under the v1.1 and v1.2 risk definitions, and attacks caught and benign questions blocked per set" width="100%"></p>
+<p align="center"><sub><b>Figure 5.</b> Left: every item of the fresh held-out set, scored by the deployed guard pod under v1.1's definition (grey) and v1.2's (colour). Right: attacks caught (up) and benign questions blocked (down), rules + classifier (<a href="docs/results/eval_guard_v2.json">eval_guard_v2.json</a>).</sub></p>
+
+The six held-out misses above made that set development data, so a new one was committed before any change
+([`attacks_heldout_v2.jsonl`](eval/attacks_heldout_v2.jsonl): 24 attacks in 7 categories;
+[`benign_hard_v2.jsonl`](eval/benign_hard_v2.jsonl): 20 hard benign questions, two with contact details). Five
+risk definitions in eight combinations were swept over thresholds on dev + held-out v1 with a selection rule
+fixed in [`run_guard_v2.py`](eval/run_guard_v2.py): most attacks caught with no more false blocks than v1.1.
+It picked `override_narrow` (v1.1's definition plus a sentence saying contact details are not harmful) at 0.55.
+
+| | v1.1: override at 0.6 | v1.2: override_narrow at 0.55 |
+|---|---|---|
+| Dev: attacks caught / benign blocked | 22/22 · 2/39 | 22/22 · 2/39 |
+| Held-out v1 (used to select) | 10/16 · 1/14 | 14/16 · 1/14 |
+| **Held-out v2, fresh** | **18/24 · 2/20** | **22/24 · 4/20** |
+
+v1.2 catches more unseen attacks and blocks twice as many benign questions. The sentence meant for contact
+details raised those questions' scores instead of lowering them, and the extraction, exfiltration and persona
+definitions never added a catch at equal false blocks. A post-hoc check, not used to choose: v1.1's definition
+at 0.55 gets 21/24 and 3/20, so most of the gain is the lower threshold. The chart keeps v1.1 as the default and
+exposes `guard.definition`. Scoring the same GGUF on Metal instead of CPU moved enough items across the line
+(v1.1: 13/16 instead of 10/16 on held-out v1) that thresholds have to be chosen on the serving backend. The guard
+pod was OOMKilled once during these runs (peak 3,049 MiB sampled, 3 GiB limit); the limit is now 4 GiB. See
+[ADR 0008](docs/adr/0008-guard-v1-2-definitions.md).
+
+### RAG quality with a local judge
+
+<p align="center"><img src="docs/images/rag_judge.png" alt="Faithfulness, answer relevancy, context precision and recall with and without the reranker, and the judge's scores on mismatched pairs" width="100%"></p>
+<p align="center"><sub><b>Figure 6.</b> Left: RAGAS-style metrics for the 30 answerable questions, judged by Qwen2.5-7B-Instruct on the host (<a href="docs/results/eval_rag_judge.json">eval_rag_judge.json</a>). Right: the same judge on answers paired with another question's contexts or question.</sub></p>
+
+[`collect_rag.py`](eval/collect_rag.py) runs inside the API pod and records the contexts the generator actually
+saw; [`rag_judge.py`](eval/rag_judge.py) re-implements the RAGAS metric definitions with our own prompts and a
+local judge (no data leaves the machine, no `ragas` dependency).
+
+| | pgvector top 4 | top 12 → reranker → top 4 |
+|---|---|---|
+| Faithfulness (judge · after reading the negatives by hand) | 0.967 · 0.967 | 0.817 · 0.917 |
+| Answer relevancy | 0.810 | 0.844 |
+| Context precision | 0.650 | **0.878** |
+| Context recall (judge · string match) | 0.967 · 0.933 | 1.000 · 1.000 |
+
+The reranker's effect appears where it should, in context precision, while answers barely move. The judge
+notices mismatches (faithfulness 0.18-0.28 against another question's contexts) and agrees with string matching
+on context recall for 97-100% of questions, but 3 of its 8 negative verdicts were wrong: claims stated verbatim
+in the context marked unsupported ([`rag_judge_audit.json`](docs/results/rag_judge_audit.json)). The judge is a
+triage tool, not a final grade. 360 judge calls took 10 minutes on the M4 Pro. See
+[ADR 0009](docs/adr/0009-local-judge-rag-eval.md).
+
 ### Monitoring
 
 <p align="center"><img src="docs/screenshots/grafana_rag_dashboard.png" alt="Grafana dashboard: requests by outcome, guardrail events, stage latency, classifier score histogram, tokens per second and slots per model server" width="100%"></p>
-<p align="center"><sub><b>Figure 5.</b> The provisioned Grafana dashboard during the evaluation runs above: request outcomes, guardrail events by rule, p95 per stage (the two plateaus are the rerank-off and rerank-on runs), classifier score histogram, and tokens/s and busy or queued slots for each llama.cpp server (the embed spikes are re-ingests).</sub></p>
+<p align="center"><sub><b>Figure 7.</b> The provisioned Grafana dashboard during the evaluation runs above: request outcomes, guardrail events by rule, p95 per stage (the two plateaus are the rerank-off and rerank-on runs), classifier score histogram, and tokens/s and busy or queued slots for each llama.cpp server (the embed spikes are re-ingests).</sub></p>
 
 <p align="center"><img src="docs/screenshots/prometheus_targets.png" alt="Prometheus target health: rag, llm, embed, guard and rerank all up" width="80%"></p>
-<p align="center"><sub><b>Figure 6.</b> Prometheus target health: the API and all four llama.cpp servers scraped by Service name.</sub></p>
+<p align="center"><sub><b>Figure 8.</b> Prometheus target health: the API and all four llama.cpp servers scraped by Service name.</sub></p>
 
 The new metrics are `rag_guard_score` (histogram of classifier scores), the `guard` and `rerank`
 labels of `rag_stage_seconds`, and the outcomes `blocked_classifier` and `classifier_unavailable` in
@@ -213,7 +265,7 @@ labels of `rag_stage_seconds`, and the outcomes `blocked_classifier` and `classi
 ### Load test
 
 <p align="center"><img src="docs/images/load_test.png" alt="Latency and throughput versus concurrency for the LLM and the RAG API" width="100%"></p>
-<p align="center"><sub><b>Figure 7.</b> k6 running as a pod inside the cluster, 30 s per stage. The LLM stages send one fixed prompt with 64 output tokens; the RAG stages cycle through 6 questions.</sub></p>
+<p align="center"><sub><b>Figure 9.</b> k6 running as a pod inside the cluster, 30 s per stage. The LLM stages send one fixed prompt with 64 output tokens; the RAG stages cycle through 6 questions.</sub></p>
 
 | Stage | Users | Requests | req/s | p50 | p95 | Output tok/s |
 |---|---|---|---|---|---|---|
@@ -241,7 +293,7 @@ labels of `rag_stage_seconds`, and the outcomes `blocked_classifier` and `classi
 - The guardrail path costs a few milliseconds: about 5,000 blocked requests/s on one API pod.
 
 <p align="center"><img src="docs/screenshots/rag_api_swagger_ask.png" alt="Swagger UI of the RAG API with a live answer and citations" width="70%"></p>
-<p align="center"><sub><b>Figure 8.</b> A live <code>POST /v1/ask</code> through the ingress: answer, citations with similarity scores and guardrail events.</sub></p>
+<p align="center"><sub><b>Figure 10.</b> A live <code>POST /v1/ask</code> through the ingress: answer, citations with similarity scores and guardrail events.</sub></p>
 
 ## Quickstart
 
@@ -309,6 +361,8 @@ tolerations and prefix caching.
 | [0005](docs/adr/0005-llm-guard-classifier.md) | An LLM risk classifier behind the rules, threshold fixed before the held-out test |
 | [0006](docs/adr/0006-cross-encoder-reranker.md) | A cross-encoder reranker, deployed but used on request |
 | [0007](docs/adr/0007-prometheus-grafana.md) | Prometheus and Grafana inside the chart, static scrape targets |
+| [0008](docs/adr/0008-guard-v1-2-definitions.md) | Guard v1.2 definition kept optional; guard memory limit 4 GiB |
+| [0009](docs/adr/0009-local-judge-rag-eval.md) | RAG quality with a local judge, checked against string matching and by hand |
 
 ## Limitations
 
@@ -325,6 +379,11 @@ tolerations and prefix caching.
   of the threshold, and the classifier adds about 1.2 s per question on CPU. Only the input is
   classified; answers are not. The indirect injection run did not retrieve the poisoned section (in
   either version), so the context filter was not exercised end to end (unit-tested only).
+  Guard v1.2 catches 22/24 attacks of a fresh set but blocks 4/20 benign questions; no definition change
+  separated the two better, only shifted the trade-off. Adaptive attacks were not tried.
+- **The RAG judge is a model too.** 3 of its 8 negative verdicts were wrong, it is from the same family as the
+  generator (possible self-preference, not measured), and 30 questions on one corpus is small.
+- **Guard memory limit raised, not re-tested.** 4 GiB follows an OOMKill at 3 GiB; no load test since.
 - **Reranker does not help answers here.** Better ranking (hit@1 0.83 → 0.93) gave the same answer
   accuracy on 30 questions at +3.8 s; measured on CPU with a 1.5B generator only.
 - **Run-to-run variation.** The v1.1 quality run with the classifier answered 0.800 against 0.767 for

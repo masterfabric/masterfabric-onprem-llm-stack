@@ -1,0 +1,1834 @@
+{
+ "judge": "qwen2.5-7b-instruct Q4_K_M, llama.cpp Metal, temperature 0, JSON-schema output",
+ "generator": "qwen2.5-1.5b-instruct (the deployed llm pod)",
+ "questions": "eval/questions.jsonl q01-q30",
+ "summary": {
+  "vector": {
+   "n": 30,
+   "answered_with_statements": 30,
+   "faithfulness": 0.967,
+   "answer_relevancy": 0.81,
+   "context_precision": 0.65,
+   "context_recall": 0.967,
+   "context_recall_string_match": 0.933,
+   "recall_judge_vs_string_agreement": 0.967,
+   "string_match_correct": 23,
+   "answer_relevancy_correct_vs_incorrect": [
+    0.843,
+    0.703
+   ],
+   "context_recall_correct_vs_incorrect": [
+    1.0,
+    0.857
+   ],
+   "unfaithful_answers": [
+    "q04"
+   ]
+  },
+  "rerank": {
+   "n": 30,
+   "answered_with_statements": 30,
+   "faithfulness": 0.817,
+   "answer_relevancy": 0.844,
+   "context_precision": 0.878,
+   "context_recall": 1.0,
+   "context_recall_string_match": 1.0,
+   "recall_judge_vs_string_agreement": 1.0,
+   "string_match_correct": 25,
+   "answer_relevancy_correct_vs_incorrect": [
+    0.838,
+    0.874
+   ],
+   "context_recall_correct_vs_incorrect": [
+    1.0,
+    1.0
+   ],
+   "unfaithful_answers": [
+    "q03",
+    "q04",
+    "q05",
+    "q09",
+    "q12",
+    "q18"
+   ]
+  }
+ },
+ "judge_sanity": {
+  "vector": {
+   "faithfulness_swapped_contexts": 0.178,
+   "answer_relevancy_swapped_question": 0.604
+  },
+  "rerank": {
+   "faithfulness_swapped_contexts": 0.278,
+   "answer_relevancy_swapped_question": 0.599
+  }
+ },
+ "judge_calls": 360,
+ "judge_seconds": 609.5,
+ "rows": [
+  {
+   "id": "q01",
+   "mode": "vector",
+   "answer": "The lakehouse lab uses RustFS (S3 API + console) [1].",
+   "correct": true,
+   "statements": [
+    "The lakehouse lab uses RustFS.",
+    "RustFS provides an S3 API.",
+    "RustFS includes an S3 console."
+   ],
+   "supported": [
+    true,
+    true,
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What technology does the lakehouse lab use for its file storage system, and how is it accessed?",
+    "Can you explain the storage solution used by the lakehouse lab and how it interfaces with S3 API and the console?",
+    "What specific file storage technology is employed by the lakehouse lab, and what are the methods for accessing it?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.8395,
+   "useful": [
+    false,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 0.5,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q02",
+   "mode": "vector",
+   "answer": "Apache Iceberg v2",
+   "correct": true,
+   "statements": [
+    "Apache Iceberg v2 is used for every table in the lakehouse lab."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the latest version of Apache Iceberg?",
+    "Can you name the most recent version of Apache Iceberg?",
+    "Which version of Apache Iceberg is currently being used?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.7525,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q03",
+   "mode": "vector",
+   "answer": "The lakehouse lab uses an Iceberg REST catalog instead of a Hive Metastore.",
+   "correct": true,
+   "statements": [
+    "The lakehouse lab uses an Iceberg REST catalog."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What catalog does the lakehouse lab use for its data management?",
+    "Does the lakehouse lab use a Hive Metastore for its catalog, or is there an alternative?",
+    "Can you explain which type of catalog the lakehouse lab employs for its data management?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.8641,
+   "useful": [
+    true,
+    false,
+    true,
+    false
+   ],
+   "context_precision": 0.8333,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q04",
+   "mode": "vector",
+   "answer": "Apache Iceberg v2 [2].",
+   "correct": false,
+   "statements": [
+    "Apache Iceberg v2 stores the state of the Iceberg REST catalog in the lakehouse lab."
+   ],
+   "supported": [
+    false
+   ],
+   "faithfulness": 0.0,
+   "gen_questions": [
+    "What version of Apache Iceberg is being discussed in this context?",
+    "Which version of Apache Iceberg is currently being used or recommended?",
+    "Can you specify which version of Apache Iceberg is being referred to?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.7165,
+   "useful": [
+    false,
+    false,
+    true,
+    false
+   ],
+   "context_precision": 0.3333,
+   "context_recall": true,
+   "context_recall_string": false
+  },
+  {
+   "id": "q05",
+   "mode": "vector",
+   "answer": "Impala (Data Warehouse service or Base)",
+   "correct": false,
+   "statements": [
+    "Impala plays the role of Data Warehouse service."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the name of the data warehouse service or base you are referring to?",
+    "Can you specify the name of the data warehouse service or base that you mentioned?",
+    "What do you call the data warehouse service or base in your context?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.4511,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q06",
+   "mode": "vector",
+   "answer": "silver.cdr uses **merge-on-read** for MERGE, UPDATE and DELETE.",
+   "correct": true,
+   "statements": [
+    "silver.cdr uses merge-on-read for MERGE",
+    "silver.cdr uses merge-on-read for UPDATE",
+    "silver.cdr uses merge-on-read for DELETE"
+   ],
+   "supported": [
+    true,
+    true,
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What technique does silver.cdr use for MERGE, UPDATE, and DELETE operations?",
+    "How does silver.cdr handle MERGE, UPDATE, and DELETE operations efficiently?",
+    "What method does silver.cdr employ for handling data modifications like MERGE, UPDATE, and DELETE?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9148,
+   "useful": [
+    false,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 0.5,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q07",
+   "mode": "vector",
+   "answer": "The lakehouse data quality gate has 11 rules.",
+   "correct": false,
+   "statements": [
+    "The lakehouse data quality gate has 11 rules."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How many rules does the lakehouse data quality gate have?",
+    "Can you tell me the total number of rules in the lakehouse data quality gate?",
+    "What is the total number of rules configured in the lakehouse data quality gate?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9835,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q08",
+   "mode": "vector",
+   "answer": "Rows that fail silver validation go to `silver.quarantine` with the first failed rule and the raw payload.",
+   "correct": true,
+   "statements": [
+    "Rows that fail silver validation go to `silver.quarantine`."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What happens to rows that fail the silver validation process?",
+    "Where are rows directed that do not pass the silver validation, and what information is included in the destination?",
+    "Can you explain the destination and the information stored for rows that fail the silver validation?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9259,
+   "useful": [
+    true,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q09",
+   "mode": "vector",
+   "answer": "The lab keeps 3 snapshots.",
+   "correct": true,
+   "statements": [
+    "The lab keeps 3 snapshots."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How many snapshots does the lab keep?",
+    "What is the number of snapshots maintained by the lab?",
+    "Can you tell me how many snapshots the lab has stored?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.874,
+   "useful": [
+    false,
+    false,
+    false,
+    true
+   ],
+   "context_precision": 0.25,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q10",
+   "mode": "vector",
+   "answer": "Kafka runs in KRaft mode in the realtime telco lab.",
+   "correct": true,
+   "statements": [
+    "Kafka runs in KRaft mode"
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What mode is Kafka running in the realtime telco lab?",
+    "Can you specify the mode of Kafka in the realtime telco lab environment?",
+    "How is Kafka configured in the realtime telco lab?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.975,
+   "useful": [
+    false,
+    false,
+    false,
+    true
+   ],
+   "context_precision": 0.25,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q11",
+   "mode": "vector",
+   "answer": "The event-time watermark is 2 minutes.",
+   "correct": true,
+   "statements": [
+    "The event-time watermark is 2 minutes."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the event-time watermark for the current data processing window?",
+    "How long is the event-time watermark delay in the system?",
+    "What is the set event-time watermark value for the system?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9036,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q12",
+   "mode": "vector",
+   "answer": "The Bernoulli CUSUM replaced the Gaussian z-score on RRC failures in the realtime detector.",
+   "correct": true,
+   "statements": [
+    "The Bernoulli CUSUM replaced the Gaussian z-score",
+    "This replacement was for RRC failures",
+    "The change was implemented in the realtime detector"
+   ],
+   "supported": [
+    true,
+    true,
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What statistical method was used to replace the Gaussian z-score in the RRC failures detector?",
+    "Which method was implemented to handle RRC failures in the realtime detector instead of the Gaussian z-score?",
+    "Can you specify the method that replaced the Gaussian z-score for RRC failures in the realtime detector?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9601,
+   "useful": [
+    true,
+    false,
+    true,
+    false
+   ],
+   "context_precision": 0.8333,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q13",
+   "mode": "vector",
+   "answer": "36",
+   "correct": true,
+   "statements": [
+    "The realtime detector found 36 incidents."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the result of 6 multiplied by 6?",
+    "How many degrees are in a square's interior angle?",
+    "What is the sum of 30 and 6?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.4626,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q14",
+   "mode": "vector",
+   "answer": "A Gaussian z-score on the RRC failure rate produced **88 false alerts** on the development seed.",
+   "correct": false,
+   "statements": [
+    "A Gaussian z-score on the RRC failure rate produced 88 false alerts on the development seed."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How many false alerts were generated by applying a Gaussian z-score to the RRC failure rate on the development seed?",
+    "What was the outcome of using a Gaussian z-score on the RRC failure rate in terms of false alerts on the development seed?",
+    "Can you provide the number of false alerts resulting from the Gaussian z-score applied to the RRC failure rate on the development seed?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.6801,
+   "useful": [
+    false,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 0.0,
+   "context_recall": false,
+   "context_recall_string": false
+  },
+  {
+   "id": "q15",
+   "mode": "vector",
+   "answer": "The p50 latency from the last report to the alert in the realtime lab is 9.8 seconds.",
+   "correct": true,
+   "statements": [
+    "The p50 latency from the last report to the alert in the realtime lab is 9.8 seconds."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the current p50 latency from the last report to the alert in the realtime lab?",
+    "Can you provide the p50 latency from the last report to the alert in the realtime lab?",
+    "How long does it take for the p50 latency from the last report to the alert in the realtime lab?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9861,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q16",
+   "mode": "vector",
+   "answer": "The simulated radio network in the realtime lab has 240 cells.",
+   "correct": true,
+   "statements": [
+    "The simulated radio network in the realtime lab has 240 cells."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How many cells are there in the simulated radio network of the realtime lab?",
+    "What is the total number of cells in the simulated radio network within the realtime lab environment?",
+    "Can you provide the number of cells in the simulated radio network for the realtime lab?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9771,
+   "useful": [
+    false,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 0.5,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q17",
+   "mode": "vector",
+   "answer": "RocksDB state store [1].",
+   "correct": true,
+   "statements": [
+    "Spark Structured Streaming uses RocksDB state store in the realtime lab."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What state store does this system use for storing data in a key-value format?",
+    "Can you specify the type of state store used in this system?",
+    "Which database technology is employed as the state store in this system?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.7125,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q18",
+   "mode": "vector",
+   "answer": "2,531 [3]",
+   "correct": true,
+   "statements": [
+    "2,531 duplicates were removed during the realtime live run."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How many people attended the event last Saturday?",
+    "What is the population of the small town according to the latest census data?",
+    "Can you provide the exact number of participants in the recent survey?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.5561,
+   "useful": [
+    false,
+    true,
+    true,
+    false
+   ],
+   "context_precision": 0.5833,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q19",
+   "mode": "vector",
+   "answer": "The realtime lab uses JSON payloads with an explicit schema contract.",
+   "correct": true,
+   "statements": [
+    "The realtime lab uses JSON payloads.",
+    "The payloads have an explicit schema contract."
+   ],
+   "supported": [
+    true,
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What format and schema does the realtime lab use for data transmission?",
+    "Can you describe the data format used in the realtime lab and its schema?",
+    "How are JSON payloads structured and what kind of schema contract is used in the realtime lab?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.8368,
+   "useful": [
+    false,
+    false,
+    false,
+    true
+   ],
+   "context_precision": 0.25,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q20",
+   "mode": "vector",
+   "answer": "The live run needed about 724 events/s, so the laptop has roughly 100\u00d7 headroom.",
+   "correct": false,
+   "statements": [
+    "The live run needed about 724 events/s."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How much headroom does the laptop have for the live run in terms of events per second (events/s)?",
+    "What is the required events per second (events/s) for the live run, and how does the laptop's capacity compare to this requirement?",
+    "Given the live run needed about 724 events/s, how much extra capacity does the laptop have?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.7227,
+   "useful": [
+    true,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q21",
+   "mode": "vector",
+   "answer": "The PSI value that triggers retraining in the churn MLOps pipeline is 0.25.",
+   "correct": true,
+   "statements": [
+    "The PSI value that triggers retraining in the churn MLOps pipeline is 0.25."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the PSI value that triggers retraining in the churn MLOps pipeline?",
+    "At what PSI value does the system initiate retraining for the churn model in the MLOps pipeline?",
+    "In the churn MLOps pipeline, what PSI threshold necessitates retraining of the model?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9641,
+   "useful": [
+    false,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 0.5,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q22",
+   "mode": "vector",
+   "answer": "The challenger must have an AUC that is at least 0.002 higher than the champion's holdout AUC to be promoted.",
+   "correct": true,
+   "statements": [
+    "The challenger must have an AUC that is at least 0.002 higher than the champion's holdout AUC to be promoted."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the minimum improvement in AUC that a challenger model must achieve to be promoted over the current champion model?",
+    "How much higher must the AUC of a challenger model be compared to the champion model's holdout AUC to be considered for promotion?",
+    "What is the specific AUC threshold that a challenger model needs to surpass the champion model's holdout AUC to be promoted?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.8581,
+   "useful": [
+    true,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q23",
+   "mode": "vector",
+   "answer": "The month that was halted by the data-quality gate was March.",
+   "correct": false,
+   "statements": [
+    "The month halted by the data-quality gate was March."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "Which month was halted due to the data-quality gate issue?",
+    "Can you specify the month that was affected by the data-quality gate?",
+    "What month was paused because of the data-quality gate problem?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.859,
+   "useful": [
+    false,
+    false,
+    true,
+    false
+   ],
+   "context_precision": 0.3333,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q24",
+   "mode": "vector",
+   "answer": "The churn scoring API checks the champion alias every 15 seconds.",
+   "correct": true,
+   "statements": [
+    "The churn scoring API checks the champion alias every 15 seconds."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How often does the churn scoring API check the champion alias?",
+    "What is the frequency at which the churn scoring API updates the champion alias?",
+    "Can you tell me the interval at which the churn scoring API verifies the champion alias?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9684,
+   "useful": [
+    false,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 0.5,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q25",
+   "mode": "vector",
+   "answer": "The MLOps lab uses the LocalExecutor [1].",
+   "correct": true,
+   "statements": [
+    "The MLOps lab uses the LocalExecutor"
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What technology does the MLOps lab use for local execution?",
+    "Which executor is utilized in the MLOps lab for local tasks?",
+    "Can you specify the type of executor used in the MLOps lab for local operations?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.8706,
+   "useful": [
+    false,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 0.5,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q26",
+   "mode": "vector",
+   "answer": "0.8300 [3].",
+   "correct": true,
+   "statements": [
+    "The auto policy reached an AUC of 0.8300 in 2026-10."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the probability that the event will occur based on the latest data?",
+    "Can you provide the exact value of the probability we calculated for the experiment?",
+    "What is the result of the calculation for the probability of the event happening?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.4419,
+   "useful": [
+    false,
+    false,
+    true,
+    false
+   ],
+   "context_precision": 0.3333,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q27",
+   "mode": "vector",
+   "answer": "The scikit-learn model used for the churn model is `HistGradientBoostingClassifier`.",
+   "correct": true,
+   "statements": [
+    "The scikit-learn model used for the churn model is HistGradientBoostingClassifier."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What type of model was used for the churn prediction model in the project?",
+    "Which specific machine learning model was implemented for predicting customer churn?",
+    "Can you specify the model used for the churn model in the project?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.864,
+   "useful": [
+    false,
+    false,
+    true,
+    false
+   ],
+   "context_precision": 0.3333,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q28",
+   "mode": "vector",
+   "answer": "The MLflow registry alias that marks the live churn model is `@champion`.",
+   "correct": true,
+   "statements": [
+    "The MLflow registry alias that marks the live churn model is @champion."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the MLflow registry alias used to mark the live churn model?",
+    "How is the live churn model identified in the MLflow registry?",
+    "Which MLflow registry alias should be used to reference the current champion model?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9289,
+   "useful": [
+    true,
+    false,
+    true,
+    false
+   ],
+   "context_precision": 0.8333,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q29",
+   "mode": "vector",
+   "answer": "The lab has to replay a year of that history reproducibly on a laptop.",
+   "correct": false,
+   "statements": [
+    "The lab has to replay a year of history."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What steps does the lab need to take to ensure they can reproduce their historical data on a laptop?",
+    "How can the lab replicate a year of their historical data on a new laptop?",
+    "What is the process the lab needs to follow to replay a year of their data history on a laptop?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.5077,
+   "useful": [
+    false,
+    false,
+    true,
+    false
+   ],
+   "context_precision": 0.3333,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q30",
+   "mode": "vector",
+   "answer": "The rollback of the champion alias to v3 took 3.41 seconds to be served.",
+   "correct": true,
+   "statements": [
+    "The rollback of the champion alias to v3 took 3.41 seconds to be served."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How long did it take for the server to process and serve the rollback of the champion alias to v3?",
+    "What is the time it took for the system to complete the rollback of the champion alias to version 3?",
+    "Can you provide the duration in seconds for the rollback of the champion alias to v3 to be served?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9501,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q01",
+   "mode": "rerank",
+   "answer": "The lakehouse lab uses RustFS [1].",
+   "correct": true,
+   "statements": [
+    "The lakehouse lab uses RustFS."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What technology does the lakehouse lab use for its file system?",
+    "Which file system does the lakehouse lab employ?",
+    "Can you tell me which technology the lakehouse lab uses for its storage system?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.8241,
+   "useful": [
+    false,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 0.5,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q02",
+   "mode": "rerank",
+   "answer": "Apache Iceberg v2",
+   "correct": true,
+   "statements": [
+    "Apache Iceberg v2 is used for every table in the lakehouse lab."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the latest version of Apache Iceberg?",
+    "Can you name the most recent version of Apache Iceberg?",
+    "Which version of Apache Iceberg is currently being used?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.7525,
+   "useful": [
+    false,
+    true,
+    true,
+    false
+   ],
+   "context_precision": 0.5833,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q03",
+   "mode": "rerank",
+   "answer": "The lakehouse lab uses an Iceberg REST catalog instead of a Hive Metastore.",
+   "correct": true,
+   "statements": [
+    "The lakehouse lab uses an Iceberg REST catalog."
+   ],
+   "supported": [
+    false
+   ],
+   "faithfulness": 0.0,
+   "gen_questions": [
+    "What catalog does the lakehouse lab use for its data management?",
+    "Does the lakehouse lab use a Hive Metastore for its catalog, or is there an alternative?",
+    "Can you explain which type of catalog the lakehouse lab employs for its data management?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.8641,
+   "useful": [
+    true,
+    true,
+    true,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q04",
+   "mode": "rerank",
+   "answer": "The lab stores tables in RustFS [2].",
+   "correct": false,
+   "statements": [
+    "The lab stores tables in RustFS."
+   ],
+   "supported": [
+    false
+   ],
+   "faithfulness": 0.0,
+   "gen_questions": [
+    "What file system does the lab use to store tables?",
+    "Which file system is utilized by the lab for storing tables?",
+    "Can you specify the file system used by the lab for table storage?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.7269,
+   "useful": [
+    true,
+    true,
+    true,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q05",
+   "mode": "rerank",
+   "answer": "The Impala role plays the role of Impala in the lakehouse lab.",
+   "correct": false,
+   "statements": [
+    "The Impala role plays the role of Impala in the lakehouse lab."
+   ],
+   "supported": [
+    false
+   ],
+   "faithfulness": 0.0,
+   "gen_questions": [
+    "What role does the Impala play in the lakehouse lab?",
+    "Can you explain the role of Impala in the lakehouse lab?",
+    "How does Impala function within the lakehouse lab environment?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.8927,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q06",
+   "mode": "rerank",
+   "answer": "silver.cdr uses merge-on-read for MERGE, UPDATE and DELETE.",
+   "correct": true,
+   "statements": [
+    "silver.cdr uses merge-on-read for MERGE, UPDATE and DELETE."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What technique does silver.cdr use for MERGE, UPDATE, and DELETE operations?",
+    "How does silver.cdr handle MERGE, UPDATE, and DELETE operations internally?",
+    "Which method does silver.cdr employ for handling MERGE, UPDATE, and DELETE operations?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9211,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q07",
+   "mode": "rerank",
+   "answer": "The lakehouse data quality gate has 20 rules.",
+   "correct": true,
+   "statements": [
+    "The lakehouse data quality gate has 20 rules."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How many rules does the lakehouse data quality gate have?",
+    "Can you tell me the total number of rules in the lakehouse data quality gate?",
+    "What is the total number of rules configured in the lakehouse data quality gate?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9835,
+   "useful": [
+    true,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q08",
+   "mode": "rerank",
+   "answer": "Rows that fail silver validation go to `silver.quarantine` with the first failed rule and the raw payload.",
+   "correct": true,
+   "statements": [
+    "Rows that fail silver validation go to `silver.quarantine`."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What happens to rows that fail the silver validation process?",
+    "Where are rows directed that do not pass the silver validation, and what information is included in the destination?",
+    "Can you explain the destination and the information stored for rows that fail the silver validation?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9259,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q09",
+   "mode": "rerank",
+   "answer": "3 [2]",
+   "correct": true,
+   "statements": [
+    "3"
+   ],
+   "supported": [
+    false
+   ],
+   "faithfulness": 0.0,
+   "gen_questions": [
+    "What is the result of 2 plus 1?",
+    "What are the numbers in the sequence 2, 3, 4 if we remove the last one?",
+    "If you have two items and someone gives you one more, how many do you have?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.5356,
+   "useful": [
+    false,
+    false,
+    false,
+    true
+   ],
+   "context_precision": 0.25,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q10",
+   "mode": "rerank",
+   "answer": "Kafka runs in KRaft mode in the realtime telco lab.",
+   "correct": true,
+   "statements": [
+    "Kafka runs in KRaft mode"
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What mode is Kafka running in the realtime telco lab?",
+    "Can you specify the mode of Kafka in the realtime telco lab environment?",
+    "How is Kafka configured in the realtime telco lab?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.975,
+   "useful": [
+    true,
+    false,
+    true,
+    false
+   ],
+   "context_precision": 0.8333,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q11",
+   "mode": "rerank",
+   "answer": "The event-time watermark in the realtime lab is 2 minutes.",
+   "correct": true,
+   "statements": [
+    "The event-time watermark in the realtime lab is 2 minutes."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the event-time watermark setting in the Realtime Lab?",
+    "How long is the event-time watermark in the Realtime Lab?",
+    "What is the default event-time watermark duration in the Realtime Lab?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9756,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q12",
+   "mode": "rerank",
+   "answer": "The count model replaced the Gaussian z-score on RRC failures in the realtime detector.",
+   "correct": false,
+   "statements": [
+    "The count model replaced the Gaussian z-score",
+    "This replacement was made in the realtime detector for RRC failures"
+   ],
+   "supported": [
+    true,
+    false
+   ],
+   "faithfulness": 0.5,
+   "gen_questions": [
+    "What statistical model was used to replace the Gaussian z-score in the RRC failures detector?",
+    "Can you explain the change made to the RRC failures detector regarding the statistical model used?",
+    "How was the Gaussian z-score replaced in the realtime detector for RRC failures?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9191,
+   "useful": [
+    false,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 0.5,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q13",
+   "mode": "rerank",
+   "answer": "36",
+   "correct": true,
+   "statements": [
+    "The realtime detector found 36 incidents."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the result of 6 multiplied by 6?",
+    "How many degrees are in a square's interior angle?",
+    "What is the sum of 30 and 6?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.4626,
+   "useful": [
+    true,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q14",
+   "mode": "rerank",
+   "answer": "253 false alerts \u00b7 precision 0.243",
+   "correct": true,
+   "statements": [
+    "The precision was 0.243",
+    "There were 253 false alerts"
+   ],
+   "supported": [
+    true,
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How many false alerts were there in the system last month?",
+    "What is the precision rate of the system based on the recent data?",
+    "Can you provide the precision and the number of false alerts for the latest system performance report?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.6751,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q15",
+   "mode": "rerank",
+   "answer": "The p50 latency from the last report to the alert in the realtime lab is 9.8 seconds.",
+   "correct": true,
+   "statements": [
+    "The p50 latency from the last report to the alert in the realtime lab is 9.8 seconds."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the current p50 latency from the last report to the alert in the realtime lab?",
+    "Can you provide the p50 latency from the last report to the alert in the realtime lab?",
+    "How long does it take for the p50 latency from the last report to the alert in the realtime lab?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9861,
+   "useful": [
+    true,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q16",
+   "mode": "rerank",
+   "answer": "The simulated radio network in the realtime lab has 120 cells.",
+   "correct": false,
+   "statements": [
+    "The simulated radio network in the realtime lab has 120 cells."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How many cells are there in the simulated radio network of the realtime lab?",
+    "Can you tell me the number of cells in the simulated radio network for the realtime lab?",
+    "What is the total number of cells in the simulated radio network within the realtime lab?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9823,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q17",
+   "mode": "rerank",
+   "answer": "RocksDB state store [1].",
+   "correct": true,
+   "statements": [
+    "Spark Structured Streaming uses RocksDB state store in the realtime lab."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What state store does this system use for storing data in a key-value format?",
+    "Can you specify the type of state store used in this system?",
+    "Which database technology is employed as the state store in this system?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.7125,
+   "useful": [
+    false,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 0.5,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q18",
+   "mode": "rerank",
+   "answer": "2,531 duplicates were removed during the realtime live run.",
+   "correct": true,
+   "statements": [
+    "2,531 duplicates were removed during the realtime live run."
+   ],
+   "supported": [
+    false
+   ],
+   "faithfulness": 0.0,
+   "gen_questions": [
+    "How many duplicates were removed during the realtime live run of the system?",
+    "What was the number of duplicates removed in the recent live run of the system?",
+    "During the most recent live run, how many duplicates were identified and removed?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9506,
+   "useful": [
+    true,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q19",
+   "mode": "rerank",
+   "answer": "The realtime lab uses JSON with an explicit schema contract on Kafka.",
+   "correct": true,
+   "statements": [
+    " The realtime lab uses JSON. ",
+    " The realtime lab uses an explicit schema contract. ",
+    " The realtime lab uses Kafka. "
+   ],
+   "supported": [
+    true,
+    true,
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What data format and schema are used in the realtime lab for data transmission?",
+    "How is data structured and validated in the Kafka topic used by the realtime lab?",
+    "What specific technology stack is employed for data exchange in the realtime lab?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.8158,
+   "useful": [
+    true,
+    true,
+    true,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q20",
+   "mode": "rerank",
+   "answer": "The realtime lab measured a bronze throughput of 125,611 events/s.",
+   "correct": true,
+   "statements": [
+    "The realtime lab measured a bronze throughput."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What was the bronze throughput measured by the realtime lab in events per second?",
+    "Can you provide the bronze throughput data from the realtime lab in terms of events per second?",
+    "According to the realtime lab, what was the throughput of bronze events in events per second?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9757,
+   "useful": [
+    true,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q21",
+   "mode": "rerank",
+   "answer": "The PSI value that triggers retraining in the churn MLOps pipeline is 0.25.",
+   "correct": true,
+   "statements": [
+    "The PSI value that triggers retraining in the churn MLOps pipeline is 0.25."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the PSI value that triggers retraining in the churn MLOps pipeline?",
+    "At what PSI value does the system initiate retraining for the churn model in the MLOps pipeline?",
+    "In the churn MLOps pipeline, what PSI threshold necessitates retraining of the model?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9641,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q22",
+   "mode": "rerank",
+   "answer": "The challenger must beat the champion by at least 0.002 AUC to be promoted.",
+   "correct": true,
+   "statements": [
+    "The challenger must beat the champion by at least 0.002 AUC to be promoted."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the minimum performance improvement required for a challenger to be promoted over the champion in a competition based on AUC scores?",
+    "How much better does a challenger need to perform compared to the champion to be considered the new champion in terms of AUC score?",
+    "What is the threshold difference in AUC score that a challenger must achieve to surpass the champion and be promoted?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.8813,
+   "useful": [
+    true,
+    true,
+    true,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q23",
+   "mode": "rerank",
+   "answer": "The month was halted by the data-quality gate in the MLOps lab.",
+   "correct": false,
+   "statements": [
+    "The month was halted."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "Why was the month's progress halted in the MLOps lab?",
+    "What caused the delay in the MLOps lab during the current month?",
+    "Can you explain why the work in the MLOps lab came to a standstill this month?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.8471,
+   "useful": [
+    false,
+    false,
+    true,
+    false
+   ],
+   "context_precision": 0.3333,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q24",
+   "mode": "rerank",
+   "answer": "The churn scoring API checks the champion alias every 15 seconds.",
+   "correct": true,
+   "statements": [
+    "The churn scoring API checks the champion alias every 15 seconds."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How often does the churn scoring API check the champion alias?",
+    "What is the frequency at which the churn scoring API updates the champion alias?",
+    "Can you tell me the interval at which the churn scoring API verifies the champion alias?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9684,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q25",
+   "mode": "rerank",
+   "answer": "The MLOps lab uses the LocalExecutor.",
+   "correct": true,
+   "statements": [
+    "The MLOps lab uses the LocalExecutor."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What technology does the MLOps lab use for local execution?",
+    "Which executor is utilized in the MLOps lab for local tasks?",
+    "Can you specify the type of executor used in the MLOps lab for local operations?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.8706,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q26",
+   "mode": "rerank",
+   "answer": "0.8300 [2]",
+   "correct": true,
+   "statements": [
+    "The auto policy reached an AUC of 0.8300 in 2026-10."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the probability that the weather will be sunny tomorrow based on the current forecast?",
+    "What is the value of the variable x in the equation 2x - 1.77 = 0?",
+    "What is the average score of the latest test in the class?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.3932,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q27",
+   "mode": "rerank",
+   "answer": "The scikit-learn model used for the churn model is `HistGradientBoostingClassifier` behind a one-hot encoder.",
+   "correct": true,
+   "statements": [
+    "The scikit-learn model used for the churn model is HistGradientBoostingClassifier.",
+    "The model is behind a one-hot encoder."
+   ],
+   "supported": [
+    true,
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What type of model was used for the churn prediction model in the project?",
+    "Which specific machine learning model was implemented for predicting customer churn?",
+    "Can you specify the model and preprocessing steps used for the churn model?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.8649,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q28",
+   "mode": "rerank",
+   "answer": "The MLflow registry alias that marks the live churn model is `@champion`.",
+   "correct": true,
+   "statements": [
+    "The MLflow registry alias that marks the live churn model is @champion."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "What is the MLflow registry alias used to mark the live churn model?",
+    "How is the live churn model identified in the MLflow registry?",
+    "Which MLflow registry alias should be used to reference the current champion model?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9289,
+   "useful": [
+    true,
+    false,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q29",
+   "mode": "rerank",
+   "answer": "The challenger is trained on the 3 newest labelled months.",
+   "correct": true,
+   "statements": [
+    "The challenger is trained on the 3 newest labelled months."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How is the challenger model trained?",
+    "What is the training period for the challenger model?",
+    "Can you specify the timeframe used for training the challenger model?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.7841,
+   "useful": [
+    true,
+    false,
+    true,
+    false
+   ],
+   "context_precision": 0.8333,
+   "context_recall": true,
+   "context_recall_string": true
+  },
+  {
+   "id": "q30",
+   "mode": "rerank",
+   "answer": "The rollback of the champion alias to v3 took 3.41 seconds to be served.",
+   "correct": true,
+   "statements": [
+    "The rollback of the champion alias to v3 took 3.41 seconds to be served."
+   ],
+   "supported": [
+    true
+   ],
+   "faithfulness": 1.0,
+   "gen_questions": [
+    "How long did it take for the server to process and serve the rollback of the champion alias to v3?",
+    "What is the time it took for the system to complete the rollback of the champion alias to version 3?",
+    "Can you provide the duration in seconds for the rollback of the champion alias to v3 to be served?"
+   ],
+   "noncommittal": false,
+   "answer_relevancy": 0.9501,
+   "useful": [
+    true,
+    true,
+    false,
+    false
+   ],
+   "context_precision": 1.0,
+   "context_recall": true,
+   "context_recall_string": true
+  }
+ ]
+}

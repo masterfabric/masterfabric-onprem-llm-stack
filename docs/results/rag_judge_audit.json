@@ -1,0 +1,14 @@
+{
+ "note": "Manual read of every negative judge verdict in eval_rag_judge.json (faithfulness < 1 or context_recall false) against the contexts in rag_collect.jsonl. 'judge_wrong' means the contexts state the claim verbatim.",
+ "verdicts": [
+  {"id": "q04", "mode": "vector", "metric": "faithfulness", "judge": 0.0, "manual": "judge right: the answer names the table format, not the catalog database, and the contexts do not say Iceberg v2 stores catalog state"},
+  {"id": "q14", "mode": "vector", "metric": "context_recall", "judge": false, "manual": "judge right: the expected fact is not in the four contexts (string match agrees)"},
+  {"id": "q03", "mode": "rerank", "metric": "faithfulness", "judge": 0.0, "manual": "judge wrong: all four contexts are titled 'Iceberg REST catalog instead of a Hive Metastore'"},
+  {"id": "q04", "mode": "rerank", "metric": "faithfulness", "judge": 0.0, "manual": "judge right for the question asked: RustFS is the object store, not the catalog's database; the contexts do not support 'stores tables in RustFS' as an answer to it"},
+  {"id": "q05", "mode": "rerank", "metric": "faithfulness", "judge": 0.0, "manual": "judge right: the answer is circular ('the Impala role plays the role of Impala')"},
+  {"id": "q09", "mode": "rerank", "metric": "faithfulness", "judge": 0.0, "manual": "judge wrong: the answer '3' matches the expected answer and the reference is attributable to the contexts (context_recall true); the bare number gave the judge nothing to check"},
+  {"id": "q12", "mode": "rerank", "metric": "faithfulness", "judge": 0.5, "manual": "judge right: the second statement adds a claim the contexts do not make"},
+  {"id": "q18", "mode": "rerank", "metric": "faithfulness", "judge": 0.0, "manual": "judge wrong: two contexts contain '2,531 duplicates removed'"}
+ ],
+ "summary": {"negative_verdicts": 8, "judge_wrong": 3, "faithfulness_rerank_after_correction": 0.917, "faithfulness_vector_after_correction": 0.967}
+}

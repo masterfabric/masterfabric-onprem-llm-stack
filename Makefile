@@ -8,7 +8,7 @@ IMAGES  := ghcr.io/ggml-org/llama.cpp:server-b12464 pgvector/pgvector:pg16 curli
 API     := http://127.0.0.1:48080
 PY      ?= .venv/bin/python
 
-.PHONY: help cluster image deploy status ask test lint eval eval-guard eval-rerank dashboards load down destroy
+.PHONY: help cluster image deploy status ask test lint eval eval-guard eval-rerank eval-guard-v2 eval-rag-judge dashboards load down destroy
 
 help: ## Show targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-10s\033[0m %s\n",$$1,$$2}'
@@ -46,6 +46,21 @@ eval-guard: ## Rules + LLM classifier on dev and held-out sets -> docs/results/e
 
 eval-rerank: ## Same questions with and without the reranker -> docs/results/eval_rerank.json
 	$(PY) eval/run_rerank_eval.py --api $(API)
+
+eval-guard-v2: ## Guard v1.2 candidates scored by the deployed guard pod; select on dev+heldout1, then held-out v2
+	kubectl -n llm port-forward svc/llm-guard 58092:8080 >/dev/null 2>&1 & PF=$$!; sleep 3; \
+	$(PY) eval/run_guard_v2.py score --url http://127.0.0.1:58092 --sets dev,heldout1 && \
+	$(PY) eval/run_guard_v2.py select && \
+	$(PY) eval/run_guard_v2.py score --url http://127.0.0.1:58092 --sets heldout2 && \
+	$(PY) eval/run_guard_v2.py final; kill $$PF
+
+JUDGE_MODEL ?= $(HOME)/.cache/mf-models/qwen2.5-7b-instruct-q4_k_m.gguf
+eval-rag-judge: ## RAGAS-style metrics: collect in the API pod, judge with Qwen2.5-7B on the host (llama.cpp)
+	kubectl -n llm exec -i deploy/llm-rag -- env QUESTIONS="$$(python3 -c 'import json;print(json.dumps([json.loads(l) for l in open("eval/questions.jsonl")]))')" python - < eval/collect_rag.py > docs/results/rag_collect.jsonl
+	llama-server -m $(JUDGE_MODEL) --host 127.0.0.1 --port 58090 -c 8192 -ngl 99 >/dev/null 2>&1 & J=$$!; \
+	kubectl -n llm port-forward svc/llm-embed 58093:8080 >/dev/null 2>&1 & PF=$$!; \
+	for i in $$(seq 120); do curl -sf 127.0.0.1:58090/health >/dev/null && break; sleep 1; done; \
+	$(PY) eval/rag_judge.py; kill $$J $$PF
 
 dashboards: ## Port-forward Grafana to 127.0.0.1:43000 and Prometheus to 127.0.0.1:49090 (Ctrl-C to stop)
 	kubectl -n $(NS) port-forward svc/$(RELEASE)-prometheus 49090:9090 & \

@@ -8,7 +8,7 @@ IMAGES  := ghcr.io/ggml-org/llama.cpp:server-b12464 pgvector/pgvector:pg16 curli
 API     := http://127.0.0.1:48080
 PY      ?= .venv/bin/python
 
-.PHONY: help cluster image deploy status ask test lint eval eval-guard eval-rerank eval-guard-v2 eval-rag-judge dashboards load down destroy
+.PHONY: help cluster image deploy status ask test lint eval eval-guard eval-rerank eval-guard-defs eval-rag-judge dashboards load down destroy
 
 help: ## Show targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-10s\033[0m %s\n",$$1,$$2}'
@@ -47,7 +47,7 @@ eval-guard: ## Rules + LLM classifier on dev and held-out sets -> docs/results/e
 eval-rerank: ## Same questions with and without the reranker -> docs/results/eval_rerank.json
 	$(PY) eval/run_rerank_eval.py --api $(API)
 
-eval-guard-v2: ## Guard v1.2 candidates scored by the deployed guard pod; select on dev+heldout1, then held-out v2
+eval-guard-defs: ## Guard v1.2 candidates scored by the deployed guard pod; select on dev+heldout1, then held-out v2
 	kubectl -n llm port-forward svc/llm-guard 58092:8080 >/dev/null 2>&1 & PF=$$!; sleep 3; \
 	$(PY) eval/run_guard_v2.py score --url http://127.0.0.1:58092 --sets dev,heldout1 && \
 	$(PY) eval/run_guard_v2.py select && \

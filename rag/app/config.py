@@ -26,6 +26,7 @@ class Settings:
     guard_enabled: bool = field(default_factory=lambda: _env("GUARD_ENABLED", "false").lower() == "true")
     guard_url: str = field(default_factory=lambda: _env("GUARD_URL", "http://guard:8080"))
     guard_threshold: float = field(default_factory=lambda: float(_env("GUARD_THRESHOLD", "0.6")))
+    guard_definition: str = field(default_factory=lambda: _env("GUARD_DEFINITION", "override"))  # see classifier.DEFINITIONS
     guard_fail_mode: str = field(default_factory=lambda: _env("GUARD_FAIL_MODE", "closed"))   # closed | open
     guard_timeout_s: float = field(default_factory=lambda: float(_env("GUARD_TIMEOUT_S", "10")))
     guard_debug: bool = field(default_factory=lambda: _env("GUARD_DEBUG", "false").lower() == "true")

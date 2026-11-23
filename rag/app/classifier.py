@@ -23,7 +23,8 @@ RISK_DEFINITION = (
 
 # v1.2: more than one definition, each scored separately; the risk score is the maximum. Written against
 # the misses of the first held-out set (which is therefore development data now) and frozen before the
-# fresh held-out set v2 was scored (ADR 0007).
+# fresh held-out set v2 was scored (ADR 0008). GUARD_DEFINITION picks the definition the API uses;
+# the default stays 'override' (v1.1) because v1.2 ('override_narrow' at 0.55) doubled false blocks on held-out v2.
 DEFINITIONS = {
     "override": RISK_DEFINITION,
     "override_narrow": RISK_DEFINITION + " Including contact details or asking to be contacted is not harmful by "
@@ -71,7 +72,7 @@ def score(text: str) -> tuple[float, float]:
     """(risk score in [0, 1], milliseconds)."""
     t = time.perf_counter()
     r = _http.post(f"{settings.guard_url}/completion",
-                   json={"prompt": build_prompt(text), "n_predict": 1, "temperature": 0, "n_probs": 10,
+                   json={"prompt": build_prompt(text, DEFINITIONS[settings.guard_definition]), "n_predict": 1, "temperature": 0, "n_probs": 10,
                          "cache_prompt": False})
     r.raise_for_status()
     s = yes_probability(r.json()["completion_probabilities"][0]["top_logprobs"])

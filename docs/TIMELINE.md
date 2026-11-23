@@ -102,3 +102,56 @@ add monitoring to the chart. Times are Europe/Istanbul (UTC+3).
   spikes in Grafana.
 - Grafana's default stat thresholds coloured the request counter red above 80; the dashboard now uses
   fixed colours.
+
+
+## Addition: guard v1.2 on a fresh held-out set, RAG quality with a local judge (2026-11-23)
+
+Started from `80b2a9c`. The fresh held-out sets were committed first, before any classifier change. Times are
+Europe/Istanbul.
+
+| # | Commit | Time | Change |
+|---|---|---|---|
+| 1 | `c43f125` | 2026-11-23 12:04 | eval: fresh held-out sets v2 (24 attacks, 20 hard benign incl. 2 with contact details), committed before any guard change |
+| 2 | `c711e8b` | 2026-11-23 12:06 | guard v1.2 candidates: five risk definitions, max score; selection script with a non-regression rule |
+| 3 | `5f108d1` | 2026-11-23 12:11 | guard v1.2 selection frozen on dev + heldout1 (deployed backend): override_narrow at 0.55 |
+| 4 | `b7ad973` | 2026-11-23 12:14 | guard v1.2 on fresh held-out v2: 22/24 caught (v1.1 18/24), 4/20 benign blocked (v1.1 2/20) |
+| 5 | `6823df9` | 2026-11-23 12:14 | api: GUARD_DEFINITION setting; default stays v1.1 'override' |
+| 6 | `1608106` | 2026-11-23 12:28 | chart: guard.definition value; guard memory limit 3Gi -> 4Gi after an OOMKill at 3049Mi peak |
+| 7 | `95d472d` | 2026-11-23 12:28 | rag eval: collect question, contexts and answer from inside the API pod (vector and rerank) |
+| 8 | `c92b5de` | 2026-11-23 12:40 | rag eval: RAGAS-style faithfulness, relevancy, context precision/recall with a local Qwen2.5-7B judge, plus judge sanity checks |
+| 9 | `2e352d9` | 2026-11-23 12:40 | rag eval: manual read of the 8 negative judge verdicts (3 wrong, all false 'unsupported') |
+| 10 | `984ca6e` | 2026-11-23 12:40 | charts: guard v1.1 vs v1.2 on three sets; RAG judge metrics and sanity |
+| 11 | `e691547` | 2026-11-23 12:41 | docs: ADRs 0008 (guard v1.2) and 0009 (local-judge RAG eval); Makefile eval-guard-v2, eval-rag-judge |
+| 12 | `327fd92` | 2026-11-23 12:41 | Makefile: name the guard v1.2 target so make help lists it |
+| 13 | `7f8f94b` | 2026-11-23 12:42 | README: guard v1.2 and RAG judge sections (figures 5-6, later figures +2), key results, ADRs 0008-0009, limitations |
+| 14 | (this commit) | | docs(timeline): this section |
+
+### Verification (measured on the M4 Pro, k3d cluster `mf-llm`)
+
+| Check | Result |
+|---|---|
+| v1.1 re-scored by the deployed guard pod | held-out v1 10/16 caught, 1/14 blocked: same as the published v1.1 numbers |
+| Selection (dev + held-out v1, rule fixed in code) | `override_narrow` at 0.55: 36/38 caught, 3/53 blocked (v1.1: 32/38, 3/53) |
+| Fresh held-out v2 | v1.1 18/24 caught, 2/20 blocked; v1.2 22/24, 4/20 |
+| Post-hoc control (not used to choose) | v1.1 definition at 0.55: 21/24, 3/20 |
+| Guard pod memory | OOMKilled once (exit 137, 3 GiB limit); 2,314 → 3,049 MiB over 70 questions, sampled every 5 s |
+| RAG collection | 70 runs (35 questions × vector/rerank) inside the API pod, 0 blocked in the kept run |
+| RAG judge | faithfulness 0.967 / 0.817 (0.917 after a manual read), relevancy 0.810 / 0.844, context precision 0.650 / 0.878, recall 0.967 / 1.000 |
+| Judge sanity | swapped contexts: faithfulness 0.178 / 0.278; swapped question: relevancy 0.604 / 0.599; recall agrees with string match on 97% / 100% |
+| Judge cost | 360 calls, 610 s (Qwen2.5-7B Q4_K_M, Metal) |
+| API unit tests | 13 passed (in the `mf-rag-api:dev` image); `helm lint` clean |
+| Machine state | judge llama-server and port-forwards stopped; k3d `mf-llm` stopped again as found; ports 3000, 8081, 11234 not touched |
+
+### Found while running it
+
+- The first selection rule (at most 1 benign blocked), tried on a host Metal run of the same GGUF, chose v1.1's
+  definition at 0.8 and caught 20 of 38 attacks instead of 34. It was replaced by a non-regression rule before
+  the deployed pod scored anything; both are described in ADR 0008.
+- Metal and CPU scores of the same Q4_K_M model differ: v1.1 catches 13/16 held-out v1 attacks on Metal and
+  10/16 on the CPU pod.
+- The sentence added for contact-detail questions raised their scores; `w19` and `w20` stay blocked.
+- The first RAG collection was blocked from question 14 onwards: the guard pod had been OOMKilled and the API
+  fails closed. The collection was repeated with memory sampling and the limit raised in the chart.
+- The judge marked 3 verbatim-supported claims as unsupported, all in the reranked run.
+- The repository's `.venv` was deleted by a disk clean-up outside this work while it ran (all `.venv` folders
+  under `~/Documents/GitHub` at 12:21); the scripts ran from a fresh virtual environment under `/tmp`.

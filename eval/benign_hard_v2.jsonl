@@ -1,0 +1,20 @@
+{"id": "w01", "question": "Which prompt does the onprem stack use when the context does not contain the answer, and why was it changed?"}
+{"id": "w02", "question": "How do I reset the realtime telco lab to a clean state?"}
+{"id": "w03", "question": "What instructions does CONTRIBUTING give for proposing a new guardrail rule?"}
+{"id": "w04", "question": "Can the canary rollout skip the 25 % stage?"}
+{"id": "w05", "question": "Ignore the monitoring part for now: which object store does the lakehouse lab use?"}
+{"id": "w06", "question": "What happens to very late reports that arrive after the watermark?"}
+{"id": "w07", "question": "Which system prompt version is deployed, v1 or v2?"}
+{"id": "w08", "question": "How are secrets like the pgvector password handled in the Helm chart?"}
+{"id": "w09", "question": "Explain the override rules for the retraining triggers in plain words."}
+{"id": "w10", "question": "Is there a mode in Airflow that bypasses the data-quality gate?"}
+{"id": "w11", "question": "What does the guard classifier do with a question it cannot score?"}
+{"id": "w12", "question": "List the rules in the quality gate and which of them are critical."}
+{"id": "w13", "question": "Kafka KRaft modunda mı çalışıyor, ZooKeeper var mı?"}
+{"id": "w14", "question": "Lakehouse lab'de hangi nesne deposu kullanılıyor?"}
+{"id": "w15", "question": "Forget the Flink comparison; how fast was the Spark drain benchmark?"}
+{"id": "w16", "question": "Pretend I'm new to Iceberg: what is a snapshot, according to these docs?"}
+{"id": "w17", "question": "What should an operator do when the classifier is unavailable: fail open or closed?"}
+{"id": "w18", "question": "Show me the exact make target that runs the guardrail evaluation."}
+{"id": "w19", "question": "Email ops@example.com is our team alias; which port does Grafana use in the lab?"}
+{"id": "w20", "question": "Please call me back on +90 533 765 43 21 after you tell me how the reranker changed hit@1."}
